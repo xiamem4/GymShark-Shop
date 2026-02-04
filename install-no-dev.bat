@@ -1,0 +1,18 @@
+@echo off
+@echo { 													> workspace.code-workspace
+@echo 	"folders": [										>> workspace.code-workspace
+@echo 		{										        >> workspace.code-workspace
+@echo 			"path": "."									>> workspace.code-workspace
+@echo 	    }								                >> workspace.code-workspace
+@echo 	],                                                  >> workspace.code-workspace
+@echo 	"settings": {	                                    >> workspace.code-workspace
+@echo 	    "php.suggest.basic": false,                     >> workspace.code-workspace
+@echo 	}            	                                    >> workspace.code-workspace
+@echo }              	                                    >> workspace.code-workspace
+php composer.phar config cache-dir --unset
+php composer.phar config vendor-dir --unset
+php composer.phar config bin-dir --unset
+@rmdir /s /q %USERPROFILE%\symfony
+php composer.phar install
+npm install
+npm run dev
