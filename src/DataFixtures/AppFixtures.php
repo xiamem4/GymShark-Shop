@@ -25,7 +25,7 @@ class AppFixtures extends Fixture
 		if (count($manager->getRepository("App\Entity\Catalogue\Article")->findAll()) == 0) {
 			$ebay = new Ebay($this->logger);
 			$ebay->setCategory('Vêtements');
-			$keywords = 'Gymshark';
+			$keywords = 'GymShark';
 			//$ebay->setCategory('Livres');
 			//$keywords = 'Harry Potter' ;
 
