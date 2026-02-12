@@ -52,9 +52,9 @@
         },
         "bump-after-update": true,
         "sort-packages": true,
-        "cache-dir": "C:/Users/i2402156/symfony/cache",
-        "vendor-dir": "C:/Users/i2402156/symfony/vendor",
-        "bin-dir": "C:/Users/i2402156/symfony/bin"
+        "cache-dir": "C:/Users/ncair/symfony/cache",
+        "vendor-dir": "C:/Users/ncair/symfony/vendor",
+        "bin-dir": "C:/Users/ncair/symfony/bin"
     },
     "autoload": {
         "psr-4": {
