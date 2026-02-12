@@ -12,7 +12,7 @@
 				<ul class="nav-menu">
 					<li class="page_item page-item-1">
 						<a href="afficheRecherche">Rechercher
-																																						un article</a>
+																																													un article</a>
 					</li>
 					<li class="page_item page-item-2 current_page_item focus">
 						<a href="accederAuPanier">Panier</a>
@@ -55,7 +55,7 @@
 										<td class="product-quantity">
 											<div class="quantity">{% set random = random() %}
 												<label class="screen-reader-text" for="quantity_{{ random }}">Quantity</label>
-												<input id="quantity_{{ random }}" class="input-text qty text" type="number" size="4" title="Qty" value="{{ lignePanier.quantite }}" name="cart[{{ lignePanier.article.id }}][qty]" min="1" step="1" >
+												<input id="quantity_{{ random }}" class="input-text qty text" type="number" size="4" title="Qty" value="{{ lignePanier.quantite }}" name="cart[{{ lignePanier.article.id }}][qty]" min="1" step="1">
 											</div>
 										</td>
 										<td class="product-subtotal">
@@ -64,41 +64,41 @@
 									</tr>
 									<script>
 										document.addEventListener("DOMContentLoaded", function () {
-											const inputs = document.querySelectorAll('.qty');
+const inputs = document.querySelectorAll('.qty');
 
-											inputs.forEach(input => {
-												input.addEventListener('change', function () {
+inputs.forEach(input => {
+input.addEventListener('change', function () {
 
-													const form = this.closest('form');
-													const formData = new FormData(form);
-													const currentRow = this.closest('tr');
-													const subtotalCell = currentRow.querySelector('.product-subtotal .amount');
+const form = this.closest('form');
+const formData = new FormData(form);
+const currentRow = this.closest('tr');
+const subtotalCell = currentRow.querySelector('.product-subtotal .amount');
 
-													fetch(form.action, {
-														method: form.method,
-														body: formData
+fetch(form.action, {
+method: form.method,
+body: formData
 
-													}).then(response => response.text()).then(html => { 
-														const parser = new DOMParser();
-														const doc = parser.parseFromString(html, 'text/html');
-														const newTotals = doc.querySelector('.cart_totals');
-														const currentTotals = document.querySelector('.cart_totals');
+}).then(response => response.text()).then(html => {
+const parser = new DOMParser();
+const doc = parser.parseFromString(html, 'text/html');
+const newTotals = doc.querySelector('.cart_totals');
+const currentTotals = document.querySelector('.cart_totals');
 
-														if (newTotals && currentTotals) {
-															currentTotals.innerHTML = newTotals.innerHTML;
-														}
+if (newTotals && currentTotals) {
+currentTotals.innerHTML = newTotals.innerHTML;
+}
 
-														const inputName = this.getAttribute('name');
-														const newSubtotal = doc.querySelector(`input[name="${inputName}"]`).closest('tr').querySelector('.product-subtotal .amount');
+const inputName = this.getAttribute('name');
+const newSubtotal = doc.querySelector(`input[name="${inputName}"]`).closest('tr').querySelector('.product-subtotal .amount');
 
-														if (subtotalCell && newSubtotal) {
-															subtotalCell.innerHTML = newSubtotal.innerHTML;
-														}
+if (subtotalCell && newSubtotal) {
+subtotalCell.innerHTML = newSubtotal.innerHTML;
+}
 
-													}).catch(error => console.error('Erreur:', error));
-												});
-											});
-										});
+}).catch(error => console.error('Erreur:', error));
+});
+});
+});
 									</script>
 								{% endfor %}
 								<tr>
@@ -116,26 +116,27 @@
 									<tr class="cart-subtotal">
 										<th>Sous-total</th>
 										<td>
-											<span class="amount">{{ panier.total }}€</span>
+											<span class="amount">{{ panier.sousTotal|number_format(2, ',', ' ') }}€</span>
 										</td>
 									</tr>
 									<tr class="shipping">
 										<th>Frais de port</th>
-										<td>Gratuit</td>
+										<td data-title="Shipping">
+											<span class="amount">{{ panier.montantFraisPort|number_format(2, ',', ' ') }}€</span>
+										</td>
 									</tr>
 									<tr class="order-total">
 										<th>Total</th>
 										<td>
 											<strong>
-												<span class="amount">{{ panier.total }}€</span>
+												<span class="amount">{{ panier.total|number_format(2, ',', ' ') }}€</span>
 											</strong>
 										</td>
 									</tr>
 								</tbody>
 							</table>
 							<div class="wc-proceed-to-checkout">
-								<a href="commanderPanier" class="checkout-button button alt wc-forward">Effectuer la
-																																																commande</a>
+								<a href="commanderPanier" class="checkout-button button alt wc-forward">Effectuer la commande</a>
 							</div>
 						</div>
 					</div>
