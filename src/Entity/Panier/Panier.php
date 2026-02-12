@@ -9,11 +9,24 @@ class Panier
 {
     private float $total;
 
+	private float $sousTotal = 0.0;
+    private float $montantFraisPort = 0.0;
+
     private ArrayObject $lignesPanier;
 
 	public function __construct()
     {
 		$this->lignesPanier = new ArrayObject();
+    }
+
+	public function getSousTotal(): float
+    {
+        return $this->sousTotal;
+    }
+
+    public function getMontantFraisPort(): float
+    {
+        return $this->montantFraisPort;
     }
 
 	public function setTotal(): void
@@ -35,13 +48,17 @@ class Panier
 	public function recalculer(): void
 	{
 		$it = $this->getLignesPanier()->getIterator();
-		$this->total = 0.0 ;
+		$this->sousTotal = 0.0 ;
 		while ($it->valid()) {
 			$ligne = $it->current();
 			$ligne->recalculer() ;
-			$this->total += $ligne->getPrixTotal() ;
+			$this->sousTotal += $ligne->getPrixTotal() ;
 			$it->next();
 		}
+
+		$this->montantFraisPort = $this->sousTotal * 0.10;
+
+		$this->total = $this->sousTotal + $this->montantFraisPort;
 	}
 	
 	public function ajouterLigne(Article $article): void
