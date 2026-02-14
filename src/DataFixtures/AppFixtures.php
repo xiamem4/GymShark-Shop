@@ -29,7 +29,7 @@ class AppFixtures extends Fixture
 			//$ebay->setCategory('Livres');
 			//$keywords = 'Harry Potter' ;
 
-			$itemSummaries = $ebay->searchItemSummaries($keywords, 9);
+			$itemSummaries = $ebay->searchItemSummaries($keywords, 29);
 
 			if ($itemSummaries !== false) {
 				foreach ($itemSummaries as $itemSummary) {

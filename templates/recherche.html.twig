@@ -1,79 +1,144 @@
 {% extends 'base.html.twig' %}
+
 {% block stylesheets %}
-<link rel="stylesheet" href="/css/jplayer.css"/>
+	<link rel="stylesheet" href="/css/jplayer.css"/>
+	<style>
+		.woocommerce-pagination {
+			text-align: center;
+			margin-top: 20px;
+		}
+		.woocommerce-pagination ul {
+			display: inline-block;
+			padding: 0;
+		}
+		.woocommerce-pagination li {
+			display: inline;
+			margin: 0 5px;
+		}
+		.woocommerce-pagination span.current {
+			font-weight: bold;
+			color: black;
+		}
+		.woocommerce-pagination a {
+			text-decoration: none;
+			color: #666;
+		}
+	</style>
 {% endblock %}
+
 {% block body %}
-				<header id="header" class="col-full">
-					<div id="logo">
-						<h1 class="site-title">Site web marchand</h1>
-					</div>
-					<nav id="site-navigation" class="main-navigation" role="navigation">
-						<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
-							<span>Menu</span>
-						</button>
-						<div class="menu">
-							<ul class="nav-menu">
-								<li class="page_item page-item-1 current_page_item focus">
-									<a href="afficheRecherche">Rechercher
-										un article</a>
-								</li>
-								<li class="page_item page-item-2">
-									<a href="accederAuPanier">Panier</a>
-								</li>
-							</ul>
-						</div>
-					</nav>
-				</header>
-				<div id="content" class="site-content" tabindex="-1">
-					<div class="col-full">
-						<div id="primary">
-							<main id="main" class="site-main" role="main">
-								<header class="woocommerce-products-header">
-									<h1 class="woocommerce-products-header__title page-title">Résultats de la recherche</h1>
-								</header>
-								<ul class="products">
-									{% for article in articles %}
-												{% if loop.index0 is divisible by(3) %}
-									<li class="product type-product first">
+	<header id="header" class="col-full">
+		<div id="logo">
+			<h1 class="site-title">Site web marchand</h1>
+		</div>
+		<nav id="site-navigation" class="main-navigation" role="navigation">
+			<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
+				<span>Menu</span>
+			</button>
+			<div class="menu">
+				<ul class="nav-menu">
+					<li class="page_item page-item-1 current_page_item focus">
+						<a href="afficheRecherche">Rechercher un article</a>
+					</li>
+					<li class="page_item page-item-2">
+						<a href="accederAuPanier">Panier</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<div id="content" class="site-content" tabindex="-1">
+		<div class="col-full">
+			<div id="primary">
+				<main id="main" class="site-main" role="main">
+					<header class="woocommerce-products-header">
+						<h1 class="woocommerce-products-header__title page-title">Résultats de la recherche</h1>
+					</header>
+
+					<ul class="products">
+						{% for article in articles %}
+							{% if loop.index0 is divisible by(3) %}
+								<li class="product type-product first">
+								{% else %}
+									{% if loop.index is divisible by(3) %}
+										<li class="product type-product last">
 										{% else %}
-											{% if loop.index is divisible by(3) %}
-									<li class="product type-product last">
-											{% else %}
-									<li class="product type-product">
+											<li class="product type-product">
 											{% endif %}
 										{% endif %}
-									<a class="woocommerce-LoopProduct-link woocommerce-loop-product__link"
-										href="ajouterLigne?id={{ article.id }}"> <img
-											src="{{ asset(article.image) }}"
-											class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="poster_2_up"
-											/>
-											<h3>{{ article.titre }}</h3> <span class="price"><ins>
-													<span class="amount">{{ article.prix }} €</span>
-												</ins></span>
+										<a class="woocommerce-LoopProduct-link woocommerce-loop-product__link" href="ajouterLigne?id={{ article.id }}">
+											<img src="{{ asset(article.image) }}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="poster_2_up"/>
+											<h3>{{ article.titre }}</h3>
+											<span class="price">
+												<ins>
+													<span class="amount">{{ article.prix }}
+														€</span>
+												</ins>
+											</span>
 
-									</a> <a
-										href="ajouterLigne?id={{ article.id }}"
-										class="button product_type_simple add_to_cart_button">Mettre
-											dans le panier</a>
-											{% if article.pistes is defined %}
-												{% if article.pistes|length > 0 %}
-										<div id="jplayer_{{ article.id }}" class="jp-jplayer" data-idArticle="{{ article.id }}"  data-pistes="{{ article.pistes|json_encode() }}">
-										  <audio id="audio"></audio>
-										  <button class="prev-jplayer" id="prev"></button>
-										  <button class="play-jplayer" id="play"></button>
-										  <button class="next-jplayer" id="next"></button>
-										  <ul id="playlist"></ul>
-										</div>
-												{% endif %}
+										</a>
+										<a href="ajouterLigne?id={{ article.id }}" class="button product_type_simple add_to_cart_button">Mettre
+																																																																													dans le panier</a>
+										{% if article.pistes is defined %}
+											{% if article.pistes|length > 0 %}
+												<div id="jplayer_{{ article.id }}" class="jp-jplayer" data-idarticle="{{ article.id }}" data-pistes="{{ article.pistes|json_encode() }}">
+													<audio id="audio"></audio>
+													<button class="prev-jplayer" id="prev"></button>
+													<button class="play-jplayer" id="play"></button>
+													<button class="next-jplayer" id="next"></button>
+													<ul id="playlist"></ul>
+												</div>
 											{% endif %}
+										{% endif %}
 									</li>
-									{% endfor %}
-								</ul>
-							</main>
-						</div>
-					</div><!-- .col-full -->
-				</div><!-- #content -->
-{% endblock %}
-{% block javascripts %}
-<script type="text/javascript" src="/js/jplayer.js"></script>
-{% endblock %}
+								{% endfor %}
+							</ul>
+
+							{% if nombreDePages is defined and nombreDePages > 1 %}
+								<nav class="woocommerce-pagination">
+									<ul
+										class="page-numbers">
+										{# Lien Précédent #}
+										{% if page > 1 %}
+											<li>
+												<a class="prev page-numbers" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': page - 1})) }}">
+													&larr; Précédent
+												</a>
+											</li>
+										{% endif %}
+
+										{# Boucle des pages #}
+										{% for i in 1..nombreDePages %}
+											<li>
+												{% if i == page %}
+													<span aria-current="page" class="page-numbers current">{{ i }}</span>
+												{% else %}
+													<a class="page-numbers" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': i})) }}">
+														{{ i }}
+													</a>
+												{% endif %}
+											</li>
+										{% endfor %}
+
+										{# Lien Suivant #}
+										{% if page < nombreDePages %}
+											<li>
+												<a class="next page-numbers" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': page + 1})) }}">
+													Suivant &rarr;
+												</a>
+											</li>
+										{% endif %}
+									</ul>
+								</nav>
+							{% endif %}
+						</main>
+					</div>
+				</div>
+				<!-- .col-full -->
+			</div>
+			<!-- #content -->
+		{% endblock %}
+
+		{% block javascripts %}
+			<script type="text/javascript" src="/js/jplayer.js"></script>
+		{% endblock %}
