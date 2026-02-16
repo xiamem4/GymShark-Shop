@@ -1512,7 +1512,8 @@ button.menu-toggle:after {
     /* On garde tes mesures */
     height: 5px;
     width: 20px;
-    background-color: #333; /* ou ta couleur */
+    background-color: #333;
+    /* ou ta couleur */
 
     /* On force la superposition au milieu */
     top: 50% !important;
@@ -1617,7 +1618,8 @@ button.menu-toggle:after {
 .main-navigation.toggled .handheld-navigation,
 .main-navigation.toggled .menu>ul:not(.nav-menu),
 .main-navigation.toggled ul[aria-expanded=true] {
-    max-height: none !important; /* On vire le max-height géant */
+    max-height: none !important;
+    /* On vire le max-height géant */
     display: block !important;
 }
 
@@ -1652,7 +1654,7 @@ button.menu-toggle:after {
 }
 
 .main-navigation ul li a:hover {
-    color: #e6e6e6
+    color: #EDAC61;
 }
 
 .site-main nav.navigation {
@@ -1966,6 +1968,10 @@ nav>button.menu-toggle:hover {
         padding-bottom: 0
     }
 
+    .site-title {
+        min-width: 300px;
+    }
+
     .site-header .site-branding {
         display: block;
         width: 100%;
@@ -2066,7 +2072,6 @@ nav>button.menu-toggle:hover {
     }
 
     .col-full {
-        max-width: 66.4989378333em;
         margin-left: auto;
         margin-right: auto;
         padding: 0 2.617924em;
@@ -2490,9 +2495,10 @@ nav>button.menu-toggle:hover {
     .main-navigation ul.nav-menu {
         max-height: none;
         overflow: visible;
-        margin-left: -1em;
         -webkit-transition: none;
-        transition: none
+        transition: none;
+        text-align: right;
+        margin-right: 5em;
     }
 
     .main-navigation ul.menu>li>a,
@@ -2504,7 +2510,7 @@ nav>button.menu-toggle:hover {
     .main-navigation ul.menu>li.page_item_has_children:hover:after,
     .main-navigation ul.nav-menu>li.menu-item-has-children:hover:after,
     .main-navigation ul.nav-menu>li.page_item_has_children:hover:after {
-        display: block
+        display: block;
     }
 
     .main-navigation ul.menu ul,
