@@ -31,15 +31,24 @@ class PanierController extends AbstractController
     #[Route('/ajouterLigne', name: 'ajouterLigne')]
     public function ajouterLigneAction(Request $request): Response
     {
-		$session = $request->getSession() ;
-		if ($session->has("panier"))
-			$this->panier = $session->get("panier") ;
-		else
-			$this->panier = new Panier() ;
-		$article = $this->entityManager->getReference("App\Entity\Catalogue\Article", $request->query->get("id"));
-		$this->panier->ajouterLigne($article) ;
-		$session->set("panier", $this->panier) ;
-		return $this->render('panier.html.twig', [
+        $session = $request->getSession() ;
+        if ($session->has("panier"))
+            $this->panier = $session->get("panier") ;
+        else
+            $this->panier = new Panier() ;
+            
+        // --- C'EST CETTE LIGNE QUI MANQUAIT PROBABLEMENT ---
+        // On récupère la quantité ("qty") depuis le formulaire. Si elle n'existe pas, on met 1 par défaut.
+        $qty = $request->query->getInt("qty", 1);
+        
+        $article = $this->entityManager->getReference("App\Entity\Catalogue\Article", $request->query->get("id"));
+        
+        // On passe maintenant la variable $qty à la méthode ajouterLigne
+        $this->panier->ajouterLigne($article, $qty) ;
+        
+        $session->set("panier", $this->panier) ;
+        
+        return $this->render('panier.html.twig', [
             'panier' => $this->panier,
         ]);
     }
@@ -105,6 +114,21 @@ class PanierController extends AbstractController
     #[Route('/commanderPanier', name: 'commanderPanier')]
     public function commanderPanierAction(Request $request): Response
     {
-		return $this->render('commande.html.twig');
+		$session = $request->getSession();
+        $panier = $session->get("panier");
+
+		// On redirige vers le panier si il est vide
+        if (!$panier || count($panier->getLignesPanier()) === 0) {
+            return $this->redirectToRoute('accederAuPanier');
+        }
+
+		$response = $this->render('commande.html.twig', [
+            'panier' => $panier
+        ]);
+
+		// Vide le panier de la session
+		$session->remove("panier");
+
+        return $response;
     }
 }

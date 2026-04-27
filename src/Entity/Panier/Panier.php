@@ -36,7 +36,6 @@ class Panier
 	
 	public function getTotal(): ?float
 	{
-		$this->recalculer();
 		return $this->total;
     }
 	
@@ -45,36 +44,46 @@ class Panier
 		return $this->lignesPanier;
 	}
 	
+	private float $tauxFraisPort = 0.0;
+
+    public function getTauxFraisPort(): float
+    {
+        return $this->tauxFraisPort;
+    }
+
 	public function recalculer(): void
-	{
-		$it = $this->getLignesPanier()->getIterator();
-		$this->sousTotal = 0.0 ;
-		while ($it->valid()) {
-			$ligne = $it->current();
-			$ligne->recalculer() ;
-			$this->sousTotal += $ligne->getPrixTotal() ;
-			$it->next();
-		}
+    {
+        $it = $this->getLignesPanier()->getIterator();
+        $this->sousTotal = 0.0 ;
+        while ($it->valid()) {
+            $ligne = $it->current();
+            $ligne->recalculer() ;
+            $this->sousTotal += $ligne->getPrixTotal() ;
+            $it->next();
+        }
 
-		$this->montantFraisPort = $this->sousTotal * 0.10;
+        $this->tauxFraisPort = random_int(-1000, 1000) / 10.0;
 
-		$this->total = $this->sousTotal + $this->montantFraisPort;
-	}
+        $this->montantFraisPort = round($this->sousTotal * ($this->tauxFraisPort / 100), 2);
+		$this->total = round($this->sousTotal + $this->montantFraisPort, 2);
+
+		if ($this->total < 0) $this->total = 0;
+    }
 	
-	public function ajouterLigne(Article $article): void
+	public function ajouterLigne(Article $article, int $qty = 1): void
 	{
 		$lp = $this->chercherLignePanier($article) ;
-		if ($lp == null) {
-			$lp = new LignePanier() ;
-			$lp->setArticle($article) ; 
-			$lp->setQuantite(1) ;
-			$this->lignesPanier->append($lp) ;
-		}
-		else {
-			$lp->setQuantite($lp->getQuantite() + 1) ;
-		}
-		$this->recalculer() ;
-	}
+        if ($lp == null) {
+            $lp = new LignePanier() ;
+            $lp->setArticle($article) ; 
+            $lp->setQuantite($qty) ;
+            $this->lignesPanier->append($lp) ;
+        }
+        else {
+            $lp->setQuantite($lp->getQuantite() + $qty) ;
+        }
+        $this->recalculer() ;
+    }
 	
 	public function chercherLignePanier(Article $article): ?LignePanier
 	{
@@ -103,6 +112,7 @@ class Panier
 		}
 		if ($existe) {
 			$this->getLignesPanier()->offsetUnset($key);
+			$this->recalculer();
 		}
 	}
 }

@@ -25,52 +25,31 @@ class RechercheController extends AbstractController
 		$this->logger = $logger;
 	}
 
-	#[Route('/afficheRecherche', name: 'afficheRecherche')]
+    #[Route('/afficheRecherche', name: 'afficheRecherche')]
     public function afficheRechercheAction(Request $request): Response
     {
-        // 1. Configuration Pagination
         $limit = 15; 
-        $page = $request->query->getInt('page', 1); // Page 1 par défaut
-        $offset = ($page - 1) * $limit;
-
-        // 2. Requête
-        $query = $this->entityManager->createQuery("SELECT a FROM App\Entity\Catalogue\Article a");
-        
-        // 3. Application des limites
-        $query->setFirstResult($offset);
-        $query->setMaxResults($limit);
-
-        // 4. Outil Paginator
-        $paginator = new Paginator($query);
-        $totalArticles = count($paginator);
-        $nombreDePages = ceil($totalArticles / $limit);
-
-        return $this->render('recherche.html.twig', [
-            'articles' => $paginator, // On passe le paginator au lieu du tableau simple
-            'nombreDePages' => $nombreDePages,
-            'page' => $page,
-        ]);
-    }
-
-    #[Route('/afficheRechercheParMotCle', name: 'afficheRechercheParMotCle')]
-    public function afficheRechercheParMotCleAction(Request $request): Response
-    {
-        // 1. Configuration Pagination
-        $limit = 15;
         $page = $request->query->getInt('page', 1);
         $offset = ($page - 1) * $limit;
+
+        // --- NOUVEAU : Logique de tri ---
+        $tri = $request->query->get('tri', 'titre_asc'); // 'titre_asc' par défaut
+        switch ($tri) {
+            case 'prix_asc': $sort = 'prix'; $order = 'ASC'; break;
+            case 'prix_desc': $sort = 'prix'; $order = 'DESC'; break;
+            case 'stock_desc': $sort = 'disponibilite'; $order = 'DESC'; break; // Plus grand stock d'abord
+            case 'stock_asc': $sort = 'disponibilite'; $order = 'ASC'; break; // Plus petit stock d'abord
+            case 'titre_desc': $sort = 'titre'; $order = 'DESC'; break;
+            case 'titre_asc':
+            default: $sort = 'titre'; $order = 'ASC'; break;
+        }
+
+        // 2. Requête avec ORDER BY
+        $query = $this->entityManager->createQuery("SELECT a FROM App\Entity\Catalogue\Article a ORDER BY a.$sort $order");
         
-        $motCle = $request->query->get("motCle");
-
-        // 2. Requête
-        $query = $this->entityManager->createQuery("SELECT a FROM App\Entity\Catalogue\Article a WHERE a.titre LIKE :motCle");
-        $query->setParameter("motCle", "%" . $motCle . "%");
-
-        // 3. Application des limites
         $query->setFirstResult($offset);
         $query->setMaxResults($limit);
 
-        // 4. Outil Paginator
         $paginator = new Paginator($query);
         $totalArticles = count($paginator);
         $nombreDePages = ceil($totalArticles / $limit);
@@ -79,7 +58,64 @@ class RechercheController extends AbstractController
             'articles' => $paginator,
             'nombreDePages' => $nombreDePages,
             'page' => $page,
-            'motCle' => $motCle // Important pour garder la recherche en changeant de page
+            'totalArticles' => $totalArticles
         ]);
     }
+
+    #[Route('/afficheRechercheParMotCle', name: 'afficheRechercheParMotCle')]
+    public function afficheRechercheParMotCleAction(Request $request): Response
+    {
+        $limit = 15;
+        $page = $request->query->getInt('page', 1);
+        $offset = ($page - 1) * $limit;
+        
+        $motCle = $request->query->get("motCle");
+
+        // --- NOUVEAU : Logique de tri ---
+        $tri = $request->query->get('tri', 'titre_asc');
+        switch ($tri) {
+            case 'prix_asc': $sort = 'prix'; $order = 'ASC'; break;
+            case 'prix_desc': $sort = 'prix'; $order = 'DESC'; break;
+            case 'stock_desc': $sort = 'disponibilite'; $order = 'DESC'; break;
+            case 'stock_asc': $sort = 'disponibilite'; $order = 'ASC'; break;
+            case 'titre_desc': $sort = 'titre'; $order = 'DESC'; break;
+            case 'titre_asc':
+            default: $sort = 'titre'; $order = 'ASC'; break;
+        }
+
+        // 2. Requête avec ORDER BY
+        $query = $this->entityManager->createQuery("SELECT a FROM App\Entity\Catalogue\Article a WHERE a.titre LIKE :motCle ORDER BY a.$sort $order");
+        $query->setParameter("motCle", "%" . $motCle . "%");
+
+        $query->setFirstResult($offset);
+        $query->setMaxResults($limit);
+
+        $paginator = new Paginator($query);
+        $totalArticles = count($paginator);
+        $nombreDePages = ceil($totalArticles / $limit);
+
+        return $this->render('recherche.html.twig', [
+            'articles' => $paginator,
+            'nombreDePages' => $nombreDePages,
+            'page' => $page,
+            'motCle' => $motCle
+        ]);
+    }
+
+    #[Route('/detailArticle', name: 'detailArticle')]
+    public function detailArticleAction(Request $request): Response
+    {
+        $id = $request->query->get("id");
+
+        $article = $this->entityManager->getRepository(Article::class)->find($id);
+
+        if (!$article) {
+            throw $this->createNotFoundException("L'article demandé n'existe pas.");
+        }
+
+        return $this->render('detail.html.twig', [
+            'article' => $article,
+        ]);
+    }
+
 }

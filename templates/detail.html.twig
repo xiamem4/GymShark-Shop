@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <header id="header" class="col-full">
+        <div id="logo">
+            <h1 class="site-title">Détail de l'article</h1>
+        </div>
+    </header>
+
+    <div class="col-full" style="margin-top: 50px; display: flex; flex-wrap: wrap; gap: 40px;">
+        {# Colonne gauche : Image #}
+        <div style="flex: 1; min-width: 300px; text-align: center;">
+            <img src="{{ asset(article.image) }}" alt="{{ article.titre }}" style="max-width: 100%; border: 1px solid #eee;">
+        </div>
+
+        {# Colonne droite : Informations #}
+        <div style="flex: 2; min-width: 300px;">
+            <h2 style="font-size: 2em; margin-bottom: 10px;">{{ article.titre }}</h2>
+            <p class="price" style="font-size: 1.5em; color: #111; font-weight: bold;">{{ article.prix }} €</p>
+            
+            <p style="margin-bottom: 30px;">
+                <strong>Disponibilité :</strong> {{ article.disponibilite }} en stock
+            </p>
+
+            {# Le formulaire d'ajout au panier avec la quantité #}
+            <form action="ajouterLigne" method="GET" style="display: flex; align-items: center; gap: 5px; margin-bottom: 30px;">
+                <input type="hidden" name="id" value="{{ article.id }}">
+                
+                <button type="button" onclick="this.nextElementSibling.stepDown()" style="width: 35px; height: 35px; background: #eee; border: 1px solid #ccc; cursor: pointer;">-</button>
+                <input type="number" name="qty" value="1" min="1" max="{{ article.disponibilite }}" style="width: 60px; height: 35px; text-align: center; border: 1px solid #ccc;">
+                <button type="button" onclick="this.previousElementSibling.stepUp()" style="width: 35px; height: 35px; background: #eee; border: 1px solid #ccc; cursor: pointer;">+</button>
+                
+                <button type="submit" class="button" style="margin-left: 10px;">Ajouter au panier</button>
+            </form>
+
+            <a href="{{ path('afficheRecherche') }}" style="text-decoration: none; color: #666;">&larr; Retour aux résultats de recherche</a>
+        </div>
+    </div>
+{% endblock %}

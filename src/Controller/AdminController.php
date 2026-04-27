@@ -215,4 +215,28 @@ class AdminController extends AbstractController
 			return $this->redirectToRoute("adminMusiques") ;
 		}
     }
+
+	#[Route('/randomizeStock', name: 'randomizeStock')]
+    public function randomizeStockAction(EntityManagerInterface $entityManager): Response
+    {
+        $repository = $entityManager->getRepository(\App\Entity\Catalogue\Article::class);
+        
+        // Récupère tous les articles de la base de données
+        $articles = $repository->findAll();
+
+        $compteur = 0;
+
+        foreach ($articles as $article) {
+            $stockAleatoire = random_int(0, 1000);
+            
+            // Met à jour la disponibilité de l'article
+            $article->setDisponibilite($stockAleatoire);
+            
+            $compteur++;
+        }
+
+        $entityManager->flush();
+
+        return new Response("Succès ! Les stocks de " . $compteur . " articles ont été modifiés de manière aléatoire.");
+    }
 }
