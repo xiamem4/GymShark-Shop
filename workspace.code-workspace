@@ -6,9 +6,9 @@
 	],                                                  							
 	"settings": {	                                    							
 	    "intelephense.environment.includePaths": [	    							
-	      	"C:\\Users\\i2402156\\symfony\\vendor"       							
+	      	"C:\\Users\\ncair\\symfony\\vendor"       							
 	    ],                                       	    							
-	    "php.workspace.includePath": "C:\\Users\\i2402156\\symfony\\vendor",			
+	    "php.workspace.includePath": "C:\\Users\\ncair\\symfony\\vendor",			
 	    "php.suggest.basic": false,                     							
 	}            	                                    							
 }	            	                                    							
