@@ -10,20 +10,29 @@ class Vetement extends Article
     #[ORM\Column(length: 255)]
     private ?string $marque = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $type = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $taille = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $couleur = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $genre = null; // Homme / Femme / Unisexe
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $matiere = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lieuExpedition = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $delaiLivraison = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $imagesSupplementaires = [];
 
     // ---------------- GETTERS / SETTERS ----------------
 
@@ -91,5 +100,38 @@ class Vetement extends Article
     {
         $this->matiere = $matiere;
         return $this;
+    }
+
+    public function getLieuExpedition(): ?string 
+    { 
+        return $this->lieuExpedition; 
+    }
+
+    public function setLieuExpedition(?string $lieu): self 
+    { 
+        $this->lieuExpedition = $lieu; 
+        return $this; 
+    }
+
+    public function getDelaiLivraison(): ?string 
+    { 
+        return $this->delaiLivraison; 
+    }
+
+    public function setDelaiLivraison(?string $delai): self 
+    { 
+        $this->delaiLivraison = $delai; 
+        return $this; 
+    }
+
+    public function getImagesSupplementaires(): ?array 
+    { 
+        return $this->imagesSupplementaires; 
+    }
+
+    public function setImagesSupplementaires(?array $images): self 
+    { 
+        $this->imagesSupplementaires = $images; 
+        return $this; 
     }
 }
