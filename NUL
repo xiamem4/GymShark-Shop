@@ -1,9 +1,0 @@
-
-In NotSupported.php line 15:
-                                                                               
-  Operation "Doctrine\DBAL\Platforms\AbstractPlatform::getListDatabasesSQL" i  
-  s not supported by platform.                                                 
-                                                                               
-
-doctrine:database:create [-c|--connection CONNECTION] [--if-not-exists]
-
