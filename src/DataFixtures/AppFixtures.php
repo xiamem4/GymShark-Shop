@@ -26,15 +26,11 @@ class AppFixtures extends Fixture
 			$ebay = new Ebay($this->logger);
 			$ebay->setCategory('Vêtements');
 			$keywords = 'GymShark';
-			//$ebay->setCategory('Livres');
-			//$keywords = 'Harry Potter' ;
 
-			$itemSummaries = $ebay->searchItemSummaries($keywords, 9);
+			$itemSummaries = $ebay->searchItemSummaries($keywords, 200);
 
 			if ($itemSummaries !== false) {
 				foreach ($itemSummaries as $itemSummary) {
-					// https://developer.ebay.com/api-docs/buy/browse/resources/item/methods/getItem
-					// $itemSummary["itemId"] = "v1|167503443270|0"
 					$id = explode("|", $itemSummary["itemId"])[1];
 					if (
 						$ebay->categoryInCategories('Vêtements', $itemSummary["categories"]) &&

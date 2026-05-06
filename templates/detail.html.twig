@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<header id="header" class="col-full header-nav">
+    <div id="logo">
+        <h1 class="site-title">The Shark</h1>
+    </div>
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+        <button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
+        </button>
+        <div class="menu">
+            <ul class="nav-menu">
+                <li class="page_item page-item-1">
+                    <a href="afficheRecherche">Rechercher
+                        un article</a>
+                </li>
+                <li class="page_item page-item-2 current_page_item focus">
+                    <a href="accederAuPanier">Panier</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="col-full" style="margin-top: 50px; display: flex; flex-wrap: wrap; gap: 40px;">
+    {# Colonne gauche : Image #}
+    <div style="flex: 1; min-width: 300px; text-align: center;">
+        <img src="{{ asset(article.image) }}" alt="{{ article.titre }}"
+            style="max-width: 100%; border: 1px solid #eee;">
+    </div>
+
+    {# Colonne droite : Informations #}
+    <div style="flex: 2; min-width: 300px;">
+        <h2 style="font-size: 2em; margin-bottom: 10px;">{{ article.titre }}</h2>
+        <p class="price" style="font-size: 1.5em; color: #111; font-weight: bold;">{{ article.prix }} €</p>
+
+        <p style="margin-bottom: 30px;">
+            <strong>Disponibilité :</strong> {{ article.disponibilite }} en stock
+        </p>
+
+        {# Le formulaire d'ajout au panier avec la quantité #}
+        <form action="ajouterLigne" method="GET"
+            style="display: flex; align-items: center; gap: 5px; margin-bottom: 30px;">
+            <input type="hidden" name="id" value="{{ article.id }}">
+
+            <input type="number" name="qty" value="1" min="1" max="{{ article.disponibilite }}"
+                style="width: 60px; height: 35px; text-align: center; border: 1px solid #ccc;">
+
+            <button type="submit" class="button" style="margin-left: 10px;">Ajouter au panier</button>
+        </form>
+
+        <a href="{{ path('afficheRecherche') }}" style="text-decoration: none; color: #666;">&larr; Retour aux résultats
+            de recherche</a>
+    </div>
+</div>
+{% endblock %}

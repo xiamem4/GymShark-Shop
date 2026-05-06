@@ -1,149 +1,161 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+{% endblock %}
 {% block body %}
-	<header id="header" class="col-full">
-		<div id="logo">
-			<h1 class="site-title">Site web marchand</h1>
+<header id="header" class="col-full header-nav">
+	<div id="logo">
+		<h1 class="site-title">The Shark</h1>
+	</div>
+	<nav id="site-navigation" class="main-navigation" role="navigation">
+		<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
+		</button>
+		<div class="menu">
+			<ul class="nav-menu">
+				<li class="page_item page-item-1">
+					<a href="afficheRecherche">Rechercher
+						un article</a>
+				</li>
+				<li class="page_item page-item-2 current_page_item focus">
+					<a href="accederAuPanier">Panier</a>
+				</li>
+			</ul>
 		</div>
-		<nav id="site-navigation" class="main-navigation" role="navigation">
-			<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
-				<span>Menu</span>
-			</button>
-			<div class="menu">
-				<ul class="nav-menu">
-					<li class="page_item page-item-1">
-						<a href="afficheRecherche">Rechercher
-																																													un article</a>
-					</li>
-					<li class="page_item page-item-2 current_page_item focus">
-						<a href="accederAuPanier">Panier</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
-	</header>
-	<div id="content" class="site-content">
-		<div class="col-full">
-			<header class="entry-header">
-				<h1 class="entry-title">Panier</h1>
-			</header>
-			<!-- .entry-header -->
-			<div class="entry-content">
-				<div class="woocommerce">
-					<form class="woocommerce-cart-form" action="recalculerPanier" name="panier" method="post">
-						<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
-							<thead>
-								<tr>
-									<th class="product-remove"></th>
-									<th class="product-thumbnail"></th>
-									<th class="product-name">Produit</th>
-									<th class="product-price">Prix</th>
-									<th class="product-quantity">Quantité</th>
-									<th class="product-subtotal">Total</th>
-								</tr>
-							</thead>
+	</nav>
+</header>
+<div id="content" class="site-content content-panier">
+	<div class="col-full">
+		<header class="entry-header">
+			<h1 class="entry-title">Panier</h1>
+		</header>
+		<!-- .entry-header -->
+		<div class="entry-content">
+			<div class="woocommerce">
+				<form class="woocommerce-cart-form" action="recalculerPanier" name="panier" method="post">
+					<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents"
+						cellspacing="0">
+						<thead>
+							<tr>
+								<th class="product-remove"></th>
+								<th class="product-thumbnail"></th>
+								<th class="product-name">Produit</th>
+								<th class="product-price">Prix</th>
+								<th class="product-quantity">Quantité</th>
+								<th class="product-subtotal">Total</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for lignePanier in panier.lignesPanier %}
+							<tr class="woocommerce-cart-form__cart-item cart_item">
+								<td class="product-remove">
+									<a class="remove" title="Remove this item"
+										href="supprimerLigne?id={{ lignePanier.article.id }}">×</a>
+								</td>
+								<td class="product-thumbnail"><img class="attachment-shop_thumbnail wp-post-image"
+										width="145" height="145" alt="hoodie_4_front"
+										src="{{ asset(lignePanier.article.image) }}"></td>
+								<td class="product-name">{{ lignePanier.article.titre }}</td>
+								<td class="product-price">
+									<span class="amount">{{ lignePanier.prixUnitaire }}€</span>
+								</td>
+								<td class="product-quantity">
+									<div class="quantity">{% set random = random() %}
+										<label class="screen-reader-text" for="quantity_{{ random }}">Quantity</label>
+										<input id="quantity_{{ random }}" class="input-text qty text" type="number"
+											size="4" title="Qty" value="{{ lignePanier.quantite }}"
+											name="cart[{{ lignePanier.article.id }}][qty]" min="1"  max="{{ lignePanier.article.disponibilite }}" step="1">
+									</div>
+								</td>
+								<td class="product-subtotal">
+									<span class="amount">{{ lignePanier.prixTotal }}€</span>
+								</td>
+							</tr>
+							<script>
+								document.addEventListener("DOMContentLoaded", function () {
+									const inputs = document.querySelectorAll('.qty');
+
+									inputs.forEach(input => {
+										input.addEventListener('change', function () {
+
+											const form = this.closest('form');
+											const formData = new FormData(form);
+											const currentRow = this.closest('tr');
+											const subtotalCell = currentRow.querySelector('.product-subtotal .amount');
+
+											fetch(form.action, {
+												method: form.method,
+												body: formData
+
+											}).then(response => response.text()).then(html => {
+												const parser = new DOMParser();
+												const doc = parser.parseFromString(html, 'text/html');
+												const newTotals = doc.querySelector('.cart_totals');
+												const currentTotals = document.querySelector('.cart_totals');
+
+												if (newTotals && currentTotals) {
+													currentTotals.innerHTML = newTotals.innerHTML;
+												}
+
+												const inputName = this.getAttribute('name');
+												const newSubtotal = doc.querySelector(`input[name="${inputName}"]`).closest('tr').querySelector('.product-subtotal .amount');
+
+												if (subtotalCell && newSubtotal) {
+													subtotalCell.innerHTML = newSubtotal.innerHTML;
+												}
+
+											}).catch(error => console.error('Erreur:', error));
+										});
+									});
+								});
+							</script>
+							{% endfor %}
+							<tr>
+								<td class="actions" colspan="6"><input class="button" type="submit"
+										value="Mise à jour du panier" name="update_cart" style="display:none;" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+				<div class="cart-collaterals">
+					<div class="cross-sells"></div>
+					<div class="cart_totals ">
+						<h2>Total de la commande</h2>
+						<table cellspacing="0">
 							<tbody>
-								{% for lignePanier in panier.lignesPanier %}
-									<tr class="woocommerce-cart-form__cart-item cart_item">
-										<td class="product-remove">
-											<a class="remove" title="Remove this item" href="supprimerLigne?id={{ lignePanier.article.id }}">×</a>
-										</td>
-										<td class="product-thumbnail"><img class="attachment-shop_thumbnail wp-post-image" width="145" height="145" alt="hoodie_4_front" src="{{ asset(lignePanier.article.image) }}"></td>
-										<td class="product-name">{{ lignePanier.article.titre }}</td>
-										<td class="product-price">
-											<span class="amount">{{ lignePanier.prixUnitaire }}€</span>
-										</td>
-										<td class="product-quantity">
-											<div class="quantity">{% set random = random() %}
-												<label class="screen-reader-text" for="quantity_{{ random }}">Quantity</label>
-												<input id="quantity_{{ random }}" class="input-text qty text" type="number" size="4" title="Qty" value="{{ lignePanier.quantite }}" name="cart[{{ lignePanier.article.id }}][qty]" min="1" step="1">
-											</div>
-										</td>
-										<td class="product-subtotal">
-											<span class="amount">{{ lignePanier.prixTotal }}€</span>
-										</td>
-									</tr>
-									<script>
-										document.addEventListener("DOMContentLoaded", function () {
-const inputs = document.querySelectorAll('.qty');
-
-inputs.forEach(input => {
-input.addEventListener('change', function () {
-
-const form = this.closest('form');
-const formData = new FormData(form);
-const currentRow = this.closest('tr');
-const subtotalCell = currentRow.querySelector('.product-subtotal .amount');
-
-fetch(form.action, {
-method: form.method,
-body: formData
-
-}).then(response => response.text()).then(html => {
-const parser = new DOMParser();
-const doc = parser.parseFromString(html, 'text/html');
-const newTotals = doc.querySelector('.cart_totals');
-const currentTotals = document.querySelector('.cart_totals');
-
-if (newTotals && currentTotals) {
-currentTotals.innerHTML = newTotals.innerHTML;
-}
-
-const inputName = this.getAttribute('name');
-const newSubtotal = doc.querySelector(`input[name="${inputName}"]`).closest('tr').querySelector('.product-subtotal .amount');
-
-if (subtotalCell && newSubtotal) {
-subtotalCell.innerHTML = newSubtotal.innerHTML;
-}
-
-}).catch(error => console.error('Erreur:', error));
-});
-});
-});
-									</script>
-								{% endfor %}
+								<tr class="cart-subtotal">
+									<th>Sous-total</th>
+									<td>
+										<span class="amount">{{ panier.sousTotal|number_format(2, ',', ' ') }}€</span>
+									</td>
+								</tr>
 								<tr>
-									<td class="actions" colspan="6"><input class="button" type="submit" value="Mise à jour du panier" name="update_cart" style="display:none;"/></td>
+									<th colspan="2" style="text-align: right; padding: 10px;">
+										Frais de port ({{ panier.tauxFraisPort }} %) :
+									</th>
+									<td style="text-align: right; padding: 10px;">{{ panier.montantFraisPort }} €</td>
+								</tr>
+								<tr class="order-total">
+									<th>Total</th>
+									<td>
+										<strong>
+											<span class="amount">{{ panier.total|number_format(2, ',', ' ') }}€</span>
+										</strong>
+									</td>
 								</tr>
 							</tbody>
 						</table>
-					</form>
-					<div class="cart-collaterals">
-						<div class="cross-sells"></div>
-						<div class="cart_totals ">
-							<h2>Total de la commande</h2>
-							<table cellspacing="0">
-								<tbody>
-									<tr class="cart-subtotal">
-										<th>Sous-total</th>
-										<td>
-											<span class="amount">{{ panier.sousTotal|number_format(2, ',', ' ') }}€</span>
-										</td>
-									</tr>
-									<tr class="shipping">
-										<th>Frais de port</th>
-										<td data-title="Shipping">
-											<span class="amount">{{ panier.montantFraisPort|number_format(2, ',', ' ') }}€</span>
-										</td>
-									</tr>
-									<tr class="order-total">
-										<th>Total</th>
-										<td>
-											<strong>
-												<span class="amount">{{ panier.total|number_format(2, ',', ' ') }}€</span>
-											</strong>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-							<div class="wc-proceed-to-checkout">
-								<a href="commanderPanier" class="checkout-button button alt wc-forward">Effectuer la commande</a>
-							</div>
+						<div class="wc-proceed-to-checkout">
+							<a href="commanderPanier" class="checkout-button button alt wc-forward">Effectuer la
+								commande</a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- .col-full -->
 	</div>
-	<!-- #content -->
+	<!-- .col-full -->
+</div>
+<!-- #content -->
 {% endblock %}
