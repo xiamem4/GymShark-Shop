@@ -9,125 +9,109 @@ use Psr\Log\LoggerInterface;
 
 class AppFixtures extends Fixture
 {
-	protected $logger;
+    protected $logger;
 
-	public function __construct(?LoggerInterface $logger = null)
-	{
-		$this->logger = $logger;
-	}
+    public function __construct(?LoggerInterface $logger = null)
+    {
+        $this->logger = $logger;
+    }
 
-	public function load(ObjectManager $manager): void
-	{
-		if (count($manager->getRepository('App\Entity\Catalogue\Article')->findAll()) == 0) {
-			$ebay = new Ebay($this->logger);
-			$ebay->setCategory('Vêtements');
-			$keywords = 'GymShark';
+    public function load(ObjectManager $manager): void
+    {
+        // On ne charge les données que si la table est vide
+        if (count($manager->getRepository('App\Entity\Catalogue\Article')->findAll()) == 0) {
+            $ebay = new Ebay($this->logger);
+            $ebay->setCategory('Vêtements');
+            $keywords = 'GymShark';
+            
+            // Récupération de la liste simplifiée (Recherche)
+            $itemSummaries = $ebay->searchItemSummaries($keywords, 200);
 
-			$itemSummaries = $ebay->searchItemSummaries($keywords, 200);
+            if ($itemSummaries !== false) {
+                foreach ($itemSummaries as $itemSummary) {
+                    $id = explode('|', $itemSummary['itemId'])[1];
 
-			if ($itemSummaries !== false) {
-				foreach ($itemSummaries as $itemSummary) {
-					$id = explode('|', $itemSummary['itemId'])[1];
+                    // Filtrage pour ne garder que les vêtements Gymshark
+                    if ($ebay->categoryInCategories('Vêtements', $itemSummary['categories']) && 
+                        stripos($itemSummary['title'], 'gymshark') !== false) {
+                        
+                        $vetement = new Vetement();
+                        $vetement->setId((int) $id);
+                        $vetement->setTitre($itemSummary['title']);
+                        $vetement->setMarque('Gymshark');
+                        $vetement->setPrix((float) $itemSummary['price']['value']);
+                        $vetement->setDisponibilite(rand(1, 10)); // Stock aléatoire pour la démo
 
-					if ($ebay->categoryInCategories('Vêtements', $itemSummary['categories']) &&
-							stripos($itemSummary['title'], 'gymshark') !== false) {
-						$vetement = new Vetement();
-						$vetement->setId((int) $id);
-						$vetement->setTitre($itemSummary['title']);
-						$vetement->setMarque('Gymshark');
-						$vetement->setPrix((float) $itemSummary['price']['value']);
-						$vetement->setDisponibilite(1);
+                        // --- 1. GESTION DES IMAGES ---
+                        if (isset($itemSummary['image']['imageUrl'])) {
+                            $vetement->setImage($itemSummary['image']['imageUrl']);
+                        }
+                        if (isset($itemSummary['additionalImages'])) {
+                            $additionalUrls = array_map(fn($img) => $img['imageUrl'], $itemSummary['additionalImages']);
+                            $vetement->setImagesSupplementaires($additionalUrls);
+                        }
 
-						// 1. Image principale et images supplémentaires
-						if (isset($itemSummary['image']['imageUrl'])) {
-							$vetement->setImage($itemSummary['image']['imageUrl']);
-						}
-						if (isset($itemSummary['additionalImages'])) {
-							$additionalUrls = array_map(fn($img) => $img['imageUrl'], $itemSummary['additionalImages']);
-							$vetement->setImagesSupplementaires($additionalUrls);
-						}
+                        // --- 2. RÉCUPÉRATION DES DÉTAILS COMPLETS (Ville, Taille, etc.) ---
+                        // On utilise getItemFullDetails pour être sûr d'avoir la ville ('city')
+                        $details = $ebay->getItemFullDetails($id);
 
-						// 2. Lieu d'expédition
-						$lieu = [];
+                        if ($details) {
+                            // A. Localisation : "Ville (Dép) - Pays"
+                            $loc = $details['itemLocation'] ?? [];
+                            $ville = $loc['city'] ?? $loc['stateOrProvince'] ?? '';
+                            $cp = $loc['postalCode'] ?? '';
+                            $pays = $loc['country'] ?? '';
 
-						// 2a. On essaie d'abord de choper la ville
-						if (!empty($itemSummary['itemLocation']['city'])) {
-							$lieu[] = $itemSummary['itemLocation']['city'];
-						}
-						// 2b. Sinon, on essaie la région / province
-						elseif (!empty($itemSummary['itemLocation']['stateOrProvince'])) {
-							$lieu[] = $itemSummary['itemLocation']['stateOrProvince'];
-						}
+                            $dept = !empty($cp) ? substr($cp, 0, 2) : '';
+                            
+                            $lieuFinal = "";
+                            if (!empty($ville)) {
+                                $lieuFinal = $ville;
+                                if (!empty($dept)) {
+                                    $lieuFinal .= " (" . $dept . ")";
+                                }
+                            } elseif (!empty($dept)) {
+                                $lieuFinal = "Département " . $dept;
+                            }
 
-						// 2c. On ajoute le code postal s'il existe
-						if (!empty($itemSummary['itemLocation']['postalCode'])) {
-							$lieu[] = $itemSummary['itemLocation']['postalCode'];
-						}
+                            if (!empty($pays)) {
+                                $lieuFinal .= (!empty($lieuFinal) ? " - " : "") . $pays;
+                            }
+                            $vetement->setLieuExpedition($lieuFinal);
 
-						// 2d. On ajoute le pays (avec une traduction des codes les plus courants)
-						if (!empty($itemSummary['itemLocation']['country'])) {
-							$codePays = $itemSummary['itemLocation']['country'];
+                            // B. Caractéristiques (Taille, Couleur, etc.)
+                            if (isset($details['localizedAspects'])) {
+                                foreach ($details['localizedAspects'] as $aspect) {
+                                    $name = strtolower($aspect['name']);
+                                    if ($name === 'taille' || $name === 'size') {
+                                        $vetement->setTaille($aspect['value']);
+                                    }
+                                    if ($name === 'couleur' || $name === 'color') {
+                                        $vetement->setCouleur($aspect['value']);
+                                    }
+                                    if ($name === 'matière' || $name === 'material') {
+                                        $vetement->setMatiere($aspect['value']);
+                                    }
+                                }
+                            }
 
-							// Tableau de traduction des codes pays ISO
-							$nomsPays = [
-								'FR' => 'France',
-								'GB' => 'Royaume-Uni',
-								'US' => 'États-Unis',
-								'DE' => 'Allemagne',
-								'IT' => 'Italie',
-								'ES' => 'Espagne',
-								'BE' => 'Belgique',
-								'CH' => 'Suisse'
-							];
+                            // C. Délai de livraison estimé
+                            if (isset($itemSummary['shippingOptions'][0]['maxEstimatedDeliveryDate'])) {
+                                $dateBrute = $itemSummary['shippingOptions'][0]['maxEstimatedDeliveryDate'];
+                                try {
+                                    $dateObj = new \DateTime($dateBrute);
+                                    $vetement->setDelaiLivraison($dateObj->format('d/m/Y'));
+                                } catch (\Exception $e) {
+                                    $vetement->setDelaiLivraison($dateBrute);
+                                }
+                            }
+                        }
 
-							// Si le code est dans notre tableau, on met le nom complet, sinon on garde le code
-							$lieu[] = $nomsPays[$codePays] ?? $codePays;
-						}
-
-						// On assemble le tout séparé par des virgules (ex: "Paris, 75000, France")
-						if (!empty($lieu)) {
-							$vetement->setLieuExpedition(implode(', ', $lieu));
-						}
-
-						// 3. Taille et autres détails (Gestion du bilinguisme eBay)
-						$taille = $ebay->getItem('Taille', $id);
-						$vetement->setTaille(empty($taille) ? $ebay->getItem('Size', $id) : $taille);
-
-						$couleur = $ebay->getItem('Couleur', $id);
-						$vetement->setCouleur(empty($couleur) ? $ebay->getItem('Color', $id) : $couleur);
-
-						$genre = $ebay->getItem('Département', $id);
-						$vetement->setGenre(empty($genre) ? $ebay->getItem('Department', $id) : $genre);
-
-						$matiere = $ebay->getItem('Matière', $id);
-						$vetement->setMatiere(empty($matiere) ? $ebay->getItem('Material', $id) : $matiere);
-
-						// 4. Estimation livraison (Formatage de la date)
-						if (isset($itemSummary['shippingOptions'][0]['maxEstimatedDeliveryDate'])) {
-							$dateBrute = $itemSummary['shippingOptions'][0]['maxEstimatedDeliveryDate'];
-							try {
-								$dateObj = new \DateTime($dateBrute);
-								$dateFormatee = $dateObj->format('d/m/Y');
-								$vetement->setDelaiLivraison($dateFormatee);
-							} catch (\Exception $e) {
-								// En cas d'erreur de parsing, on met la date brute
-								$vetement->setDelaiLivraison($dateBrute);
-							}
-						}
-
-						$manager->persist($vetement);
-					}
-				}
-				$manager->flush();
-			}
-		}
-	}
-
-	public function extractWords(string $text): array
-	{
-		$text = mb_strtolower($text);
-		$text = preg_replace('/[^\p{L}\p{N}\s]/u', ' ', $text);
-		$words = preg_split('/\s+/', trim($text));
-		return $words;
-	}
+                        $manager->persist($vetement);
+                    }
+                }
+                $manager->flush();
+            }
+        }
+    }
 }
