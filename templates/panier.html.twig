@@ -65,7 +65,7 @@
 										<label class="screen-reader-text" for="quantity_{{ random }}">Quantity</label>
 										<input id="quantity_{{ random }}" class="input-text qty text" type="number"
 											size="4" title="Qty" value="{{ lignePanier.quantite }}"
-											name="cart[{{ lignePanier.article.id }}][qty]" min="1" step="1">
+											name="cart[{{ lignePanier.article.id }}][qty]" min="1"  max="{{ lignePanier.article.disponibilite }}" step="1">
 									</div>
 								</td>
 								<td class="product-subtotal">

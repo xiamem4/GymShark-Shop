@@ -27,7 +27,7 @@ class AppFixtures extends Fixture
 			$ebay->setCategory('Vêtements');
 			$keywords = 'GymShark';
 
-			$itemSummaries = $ebay->searchItemSummaries($keywords, 29);
+			$itemSummaries = $ebay->searchItemSummaries($keywords, 200);
 
 			if ($itemSummaries !== false) {
 				foreach ($itemSummaries as $itemSummary) {

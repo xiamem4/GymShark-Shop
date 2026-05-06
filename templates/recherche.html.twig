@@ -89,17 +89,9 @@
 							{# Champ caché pour envoyer l'ID de l'article #}
 							<input type="hidden" name="id" value="{{ article.id }}">
 
-							{# Bouton Moins #}
-							<button type="button" onclick="this.nextElementSibling.stepDown()"
-								style="width: 30px; height: 30px; padding: 0; background: #eee; border: 1px solid #ccc; cursor: pointer;">-</button>
-
 							{# Champ Quantité #}
-							<input type="number" name="qty" value="1" min="1"
+							<input type="number" name="qty" value="1" min="1" max="{{ article.disponibilite }}"
 								style="width: 50px; height: 30px; text-align: center; border: 1px solid #ccc;">
-
-							{# Bouton Plus #}
-							<button type="button" onclick="this.previousElementSibling.stepUp()"
-								style="width: 30px; height: 30px; padding: 0; background: #eee; border: 1px solid #ccc; cursor: pointer;">+</button>
 
 							{# Bouton Ajouter #}
 							<button type="submit" class="button product_type_simple add_to_cart_button"
