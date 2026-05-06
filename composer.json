@@ -51,10 +51,7 @@
             "symfony/runtime": true
         },
         "bump-after-update": true,
-        "sort-packages": true,
-        "cache-dir": "C:/Users/ncair/symfony/cache",
-        "vendor-dir": "C:/Users/ncair/symfony/vendor",
-        "bin-dir": "C:/Users/ncair/symfony/bin"
+        "sort-packages": true
     },
     "autoload": {
         "psr-4": {
