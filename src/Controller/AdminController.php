@@ -239,4 +239,5 @@ class AdminController extends AbstractController
 
         return new Response("Succès ! Les stocks de " . $compteur . " articles ont été modifiés de manière aléatoire.");
     }
+
 }

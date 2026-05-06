@@ -44,10 +44,15 @@ class AppFixtures extends Fixture
 
                         // --- 1. GESTION DES IMAGES ---
                         if (isset($itemSummary['image']['imageUrl'])) {
-                            $vetement->setImage($itemSummary['image']['imageUrl']);
+                            $url = $itemSummary['image']['imageUrl'];
+                            $urlHD = preg_replace('/s-l\d+\.(jpg|jpeg|png|webp)/i', 's-l1000.$1', $url);
+                            $vetement->setImage($urlHD);
                         }
                         if (isset($itemSummary['additionalImages'])) {
-                            $additionalUrls = array_map(fn($img) => $img['imageUrl'], $itemSummary['additionalImages']);
+                            $additionalUrls = array_map(function($img) {
+                                return preg_replace('/s-l\d+\.(jpg|jpeg|png|webp)/i', 's-l1000.$1', $img['imageUrl']);
+                            }, $itemSummary['additionalImages']);
+                            
                             $vetement->setImagesSupplementaires($additionalUrls);
                         }
 
