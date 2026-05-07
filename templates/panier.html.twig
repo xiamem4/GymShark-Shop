@@ -87,10 +87,10 @@
 										{{ lignePanier.article.titre }}
 									</a>
 								</td>
-								<td class="product-price">
+								<td class="product-price" data-title="Prix">
 									<span class="amount">{{ lignePanier.prixUnitaire }}€</span>
 								</td>
-								<td class="product-quantity">
+								<td class="product-quantity" data-title="Quantité">
 									<div class="quantity">{% set random = random() %}
 										<label class="screen-reader-text" for="quantity_{{ random }}">Quantity</label>
 										<input id="quantity_{{ random }}" class="input-text qty text" type="number"
@@ -99,7 +99,7 @@
 											max="{{ lignePanier.article.disponibilite }}" step="1">
 									</div>
 								</td>
-								<td class="product-subtotal">
+								<td class="product-subtotal" data-title="Total">
 									<span class="amount">{{ lignePanier.prixTotal }}€</span>
 								</td>
 							</tr>
@@ -166,10 +166,10 @@
 									</td>
 								</tr>
 								<tr>
-									<th colspan="2" style="text-align: right; padding: 10px;">
-										Frais de port ({{ panier.tauxFraisPort }} %) :
+									<th>
+										Frais de port ({{ panier.tauxFraisPort }} %)
 									</th>
-									<td style="text-align: right; padding: 10px;">{{ panier.montantFraisPort }} €</td>
+									<td>{{ panier.montantFraisPort }} €</td>
 								</tr>
 								<tr class="order-total">
 									<th>Total</th>

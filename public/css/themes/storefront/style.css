@@ -2892,93 +2892,7 @@ h3,
 }
 
 @media (max-width: 768px) {
-    .shark-reg-container {
-        margin: 20px;
-        padding: 20px;
-        box-shadow: none;
-    }
-
-    .conf-container {
-        margin-top: 20px;
-    }
-
-    .order-table th:nth-child(2),
-    .order-table td:nth-child(2) {
-        display: none;
-    }
-
-    .order-table tfoot th[colspan="2"] {
-        colspan: 1;
-        text-align: left;
-        padding-left: 10px;
-    }
-
-    .order-table {
-        display: table;
-        width: 100%;
-    }
-
-    .product-image-section,
-    .product-info-section {
-        flex: none;
-        width: 100%;
-        min-width: 0;
-    }
-
-    .main-img {
-        max-width: 100%;
-        height: auto;
-    }
-
-    .thumb-img {
-        width: 65px;
-        height: 65px;
-    }
-
-    .product-title {
-        font-size: 1.5em;
-        text-align: center;
-    }
-
-    .product-price {
-        font-size: 1.6em;
-        text-align: center;
-    }
-
-    .cart-form {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 15px;
-    }
-
-    .qty-wrapper {
-        justify-content: center;
-        display: flex;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    .btn-add-cart {
-        width: 100%;
-        height: 50px;
-    }
-
-    .rec-card {
-        width: calc(50% - 10px);
-        padding: 10px;
-    }
-
-    .rec-img {
-        height: 140px;
-    }
-
-    .a-retour {
-        display: block;
-        text-align: center;
-        margin-top: 20px;
-        padding-bottom: 30px;
-    }
-
+    /* Chaque cellule devient un bloc flexible */
     .shop_table td {
         display: flex !important;
         justify-content: space-between !important;
@@ -2990,8 +2904,9 @@ h3,
         box-sizing: border-box !important;
     }
 
+    /* Génération du titre devant le résultat */
     .shop_table td::before {
-        content: attr(data-title);
+        content: attr(data-title); /* Récupère le texte dans data-title */
         font-weight: bold !important;
         text-transform: uppercase !important;
         font-size: 0.8rem !important;
@@ -3001,20 +2916,22 @@ h3,
         text-align: left !important;
     }
 
+    /* Exceptions pour l'image et la croix de suppression */
     .product-remove::before,
     .product-thumbnail::before {
-        content: "" !important;
+        content: "" !important; /* On ne veut pas de texte "Image:" ou "Supprimer:" */
     }
 
-    .product-remove,
-    .product-thumbnail {
-        justify-content: center !important;
+    .product-remove, .product-thumbnail {
+        justify-content: center !important; /* Centrer l'image et la croix */
     }
 
+    /* On retire la bordure de la dernière cellule de la carte */
     .shop_table td:last-child {
         border-bottom: none !important;
     }
 
+    /* Style de la ligne (la carte) */
     .woocommerce-cart-form__cart-item {
         border: 1px solid #EDAC61 !important;
         border-radius: 10px !important;
@@ -3025,10 +2942,9 @@ h3,
 
     .entry-title {
         margin-top: 120px;
-    }
+      }
 
-    html,
-    body {
+    html, body {
         overflow-x: hidden !important;
         position: relative;
     }
@@ -3061,7 +2977,6 @@ h3,
         width: 100%;
     }
 
-    /* On cache les entêtes du tableau qui ne servent plus */
     .shop_table thead {
         display: none;
     }
