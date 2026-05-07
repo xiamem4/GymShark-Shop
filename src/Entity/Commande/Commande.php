@@ -17,7 +17,8 @@ class Commande
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     private ?User $utilisateur = null;
 
     #[ORM\Column(length: 255)]
@@ -47,7 +48,7 @@ class Commande
         return $this->utilisateur;
     }
 
-    public function setUtilisateur(?User $utilisateur): static
+    public function setUtilisateur(?User $utilisateur): self
     {
         $this->utilisateur = $utilisateur;
 
@@ -97,7 +98,6 @@ class Commande
 
     public function setLigneCommande(LigneCommande $ligneCommande): static
     {
-        // set the owning side of the relation if necessary
         if ($ligneCommande->getCommande() !== $this) {
             $ligneCommande->setCommande($this);
         }

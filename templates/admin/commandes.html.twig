@@ -22,8 +22,14 @@
                 <td>{{ commande.dateCreation|date('d/m/Y H:i') }}</td>
                 <td><code>{{ commande.reference }}</code></td>
                 <td>
+                    {% if commande.utilisateur is not null %}
                     <strong>{{ commande.utilisateur.nom|upper }} {{ commande.utilisateur.prenom }}</strong><br>
                     <small class="text-muted">{{ commande.utilisateur.email }}</small>
+                    {% else %}
+                    <span class="text-danger">
+                        <i class="fa fa-exclamation-triangle"></i> Utilisateur supprimé
+                    </span>
+                    {% endif %}
                 </td>
                 <td>
                     <ul class="list-unstyled mb-0">
