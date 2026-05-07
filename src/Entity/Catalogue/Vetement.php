@@ -7,6 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Vetement extends Article
 {
+    public function getTypeNom(): string
+    {
+        return 'Vêtement';
+    }
+    
     #[ORM\Column(length: 255)]
     private ?string $marque = null;
 

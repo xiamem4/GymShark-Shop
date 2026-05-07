@@ -10,6 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\DiscriminatorMap(["article" => "Article", "vetement" => "Vetement"])]
 class Article
 {
+    public function getTypeNom(): string
+    {
+        return 'Article';
+    }
+    
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "NONE")]
     #[ORM\Column(type: 'bigint')]

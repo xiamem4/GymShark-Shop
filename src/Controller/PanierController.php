@@ -5,6 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,6 +15,7 @@ use Psr\Log\LoggerInterface;
 use App\Entity\Catalogue\Article;
 use App\Entity\Panier\Panier;
 use App\Entity\Panier\LignePanier;
+
 
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -96,6 +99,7 @@ class PanierController extends AbstractController
     }
 	 
     #[Route('/accederAuPanier', name: 'accederAuPanier')]
+	#[IsGranted('ROLE_USER')]
     public function accederAuPanierAction(Request $request): Response
     {
 		$session = $request->getSession() ;
@@ -116,6 +120,7 @@ class PanierController extends AbstractController
     {
 		$session = $request->getSession();
         $panier = $session->get("panier");
+		$user = $this->getUser();
 
 		// On redirige vers le panier si il est vide
         if (!$panier || count($panier->getLignesPanier()) === 0) {
