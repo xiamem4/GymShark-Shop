@@ -2253,6 +2253,58 @@ nav>button.menu-toggle:hover {
 }
 
 @media (max-width: 768px) {
+    /* Chaque cellule devient un bloc flexible */
+    .shop_table td {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        text-align: right !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        padding: 12px 15px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Génération du titre devant le résultat */
+    .shop_table td::before {
+        content: attr(data-title); /* Récupère le texte dans data-title */
+        font-weight: bold !important;
+        text-transform: uppercase !important;
+        font-size: 0.8rem !important;
+        color: #666 !important;
+        padding-right: 10px !important;
+        flex-shrink: 0 !important;
+        text-align: left !important;
+    }
+
+    /* Exceptions pour l'image et la croix de suppression */
+    .product-remove::before,
+    .product-thumbnail::before {
+        content: "" !important; /* On ne veut pas de texte "Image:" ou "Supprimer:" */
+    }
+
+    .product-remove, .product-thumbnail {
+        justify-content: center !important; /* Centrer l'image et la croix */
+    }
+
+    /* On retire la bordure de la dernière cellule de la carte */
+    .shop_table td:last-child {
+        border-bottom: none !important;
+    }
+
+    /* Style de la ligne (la carte) */
+    .woocommerce-cart-form__cart-item {
+        border: 1px solid #EDAC61 !important;
+        border-radius: 10px !important;
+        margin-bottom: 20px !important;
+        background: #fff !important;
+        overflow: hidden !important;
+    }
+
+    .entry-title {
+        margin-top: 120px;
+      }
+
     html, body {
         overflow-x: hidden !important;
         position: relative;
@@ -2271,7 +2323,7 @@ nav>button.menu-toggle:hover {
     /* --- Styles Généraux du Panier --- */
     .content-panier {
         width: 95vw;
-        margin-left: 50%;
+        margin-left: 50% !important;
         transform: translateX(-50%);
     }
 
@@ -2284,10 +2336,6 @@ nav>button.menu-toggle:hover {
     .shop_table tr {
         display: block;
         width: 100%;
-    }
-
-    .shop_table thead {
-        display: none;
     }
 
     .woocommerce-cart-form__cart-item {

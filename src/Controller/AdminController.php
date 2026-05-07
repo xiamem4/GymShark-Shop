@@ -26,12 +26,12 @@ class AdminController extends AbstractController
 {
 	private EntityManagerInterface $entityManager;
 	private LoggerInterface $logger;
-	
+
 	public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger)  {
 		$this->entityManager = $entityManager;
 		$this->logger = $logger;
 	}
-	
+
     #[Route('/admin/musiques', name: 'adminMusiques')]
     public function adminMusiquesAction(Request $request): Response
     {
@@ -51,7 +51,7 @@ class AdminController extends AbstractController
             'articles' => $articles,
         ]);
     }
-	
+
     #[Route('/admin/musiques/supprimer', name: 'adminMusiquesSupprimer')]
     public function adminMusiquesSupprimerAction(Request $request): Response
     {
@@ -62,7 +62,7 @@ class AdminController extends AbstractController
 		}
 		return $this->redirectToRoute("adminMusiques") ;
     }
-	
+
     #[Route('/admin/livres/supprimer', name: 'adminLivresSupprimer')]
     public function adminLivresSupprimerAction(Request $request): Response
     {
@@ -90,9 +90,9 @@ class AdminController extends AbstractController
 		$formBuilder->add("valider", SubmitType::class) ;
 		// Generate form
 		$form = $formBuilder->getForm();
-		
+
 		$form->handleRequest($request) ;
-		
+
 		if ($form->isSubmitted()) {
 			$entity = $form->getData() ;
 			$entity->setId(hexdec(uniqid()));
@@ -106,7 +106,7 @@ class AdminController extends AbstractController
 			]);
 		}
     }
-	
+
     #[Route('/admin/musiques/ajouter', name: 'adminMusiquesAjouter')]
     public function adminMusiquesAjouterAction(Request $request): Response
     {
@@ -121,9 +121,9 @@ class AdminController extends AbstractController
 		$formBuilder->add("valider", SubmitType::class) ;
 		// Generate form
 		$form = $formBuilder->getForm();
-		
+
 		$form->handleRequest($request) ;
-		
+
 		if ($form->isSubmitted()) {
 			$entity = $form->getData() ;
 			$entity->setId(hexdec(uniqid()));
@@ -142,7 +142,7 @@ class AdminController extends AbstractController
     public function adminLivresModifierAction(Request $request): Response
     {
 		$entity = $this->entityManager->getReference("App\Entity\Catalogue\Livre", $request->query->get("id"));
-		if ($entity === null) 
+		if ($entity === null)
 			$entity = $this->entityManager->getReference("App\Entity\Catalogue\Livre", $request->request->get("id"));
 		if ($entity !== null) {
 			$formBuilder = $this->createFormBuilder($entity);
@@ -158,9 +158,9 @@ class AdminController extends AbstractController
 			$formBuilder->add("valider", SubmitType::class) ;
 			// Generate form
 			$form = $formBuilder->getForm();
-			
+
 			$form->handleRequest($request) ;
-			
+
 			if ($form->isSubmitted()) {
 				$entity = $form->getData() ;
 				$this->entityManager->persist($entity);
@@ -177,12 +177,12 @@ class AdminController extends AbstractController
 			return $this->redirectToRoute("adminLivres") ;
 		}
     }
-	
+
     #[Route('/admin/musiques/modifier', name: 'adminMusiquesModifier')]
     public function adminMusiquesModifierAction(Request $request): Response
     {
 		$entity = $this->entityManager->getReference("App\Entity\Catalogue\Musique", $request->query->get("id"));
-		if ($entity === null) 
+		if ($entity === null)
 			$entity = $this->entityManager->getReference("App\Entity\Catalogue\Musique", $request->request->get("id"));
 		if ($entity !== null) {
 			$formBuilder = $this->createFormBuilder($entity);
@@ -196,9 +196,9 @@ class AdminController extends AbstractController
 			$formBuilder->add("valider", SubmitType::class) ;
 			// Generate form
 			$form = $formBuilder->getForm();
-			
+
 			$form->handleRequest($request) ;
-			
+
 			if ($form->isSubmitted()) {
 				$entity = $form->getData() ;
 				$this->entityManager->persist($entity);
@@ -220,7 +220,7 @@ class AdminController extends AbstractController
     public function randomizeStockAction(EntityManagerInterface $entityManager): Response
     {
         $repository = $entityManager->getRepository(\App\Entity\Catalogue\Article::class);
-        
+
         // Récupère tous les articles de la base de données
         $articles = $repository->findAll();
 
@@ -228,10 +228,10 @@ class AdminController extends AbstractController
 
         foreach ($articles as $article) {
             $stockAleatoire = random_int(0, 1000);
-            
+
             // Met à jour la disponibilité de l'article
             $article->setDisponibilite($stockAleatoire);
-            
+
             $compteur++;
         }
 
