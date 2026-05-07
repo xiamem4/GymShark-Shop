@@ -2252,7 +2252,201 @@ nav>button.menu-toggle:hover {
     background-color: #333; /* Change en anthracite au survol */
 }
 
+/* Structure Globale */
+.product-container {
+    margin-top: 120px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    font-family: sans-serif;
+}
+
+/* Colonne Gauche - Image */
+.product-image-section {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+}
+.main-img {
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    object-fit: contain;
+    background: #fff;
+}
+.gallery-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.thumb-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.thumb-img:hover { transform: scale(1.05); }
+
+/* Colonne Droite - Infos */
+.product-info-section {
+    flex: 2;
+    min-width: 300px;
+}
+.product-title { font-size: 2em; margin-bottom: 10px; color: #333; }
+.product-price { font-size: 1.8em; color: #111; font-weight: bold; margin: 15px 0; }
+
+.shipping-box {
+    background: #f9f9f9;
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 4px;
+}
+.shipping-box p { margin: 5px 0; color: #444; }
+
+/* Formulaire Panier */
+.cart-form { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+.qty-wrapper {
+    margin: 0;
+}
+.a-retour {
+    text-decoration: none;
+    color: #666;
+    font-size: 0.9em;
+}
+.qty-input {
+    width: 50px;
+    height: 40px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-size: 1.1em;
+}
+.btn-add-cart {
+    height: 42px;
+    padding: 0 25px;
+    background-color: #f0ad4e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+.btn-add-cart:hover { background-color: #ec971f; }
+
+/* Recommandations */
+.recommendations-section {
+    width: 100%;
+    margin-top: 60px;
+    border-top: 1px solid #ddd;
+    padding-top: 30px;
+}
+.rec-grid { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+.rec-card {
+    width: 200px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    background: #fff;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+.rec-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+.rec-img { width: 100%; height: 180px; object-fit: contain; margin-bottom: 15px; }
+.rec-title {
+    font-size: 0.9em;
+    margin: 0 0 10px 0;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 @media (max-width: 768px) {
+    .product-container {
+        margin-top: 120px; /* On réduit un peu la marge haute sur mobile */
+        flex-direction: column;
+        gap: 20px;
+        padding: 0 15px; /* On ajoute un peu d'espace sur les côtés */
+    }
+
+    /* 2. On remet les sections à 100% de largeur */
+    .product-image-section,
+    .product-info-section {
+        flex: none;
+        width: 100%;
+        min-width: 0;
+    }
+
+    /* 3. Ajustement de l'image principale */
+    .main-img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* 4. On agrandit les miniatures pour qu'elles soient plus faciles à cliquer avec le doigt */
+    .thumb-img {
+        width: 65px;
+        height: 65px;
+    }
+
+    /* 5. On ajuste les textes pour les petits écrans */
+    .product-title {
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    .product-price {
+        font-size: 1.6em;
+        text-align: center;
+    }
+
+    /* 6. Formulaire de panier : On le met en colonne pour plus de confort */
+    .cart-form {
+        flex-direction: column;
+        align-items: stretch; /* Le bouton prend toute la largeur */
+        gap: 15px;
+    }
+
+    .qty-wrapper {
+        justify-content: center;
+        display: flex;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .btn-add-cart {
+        width: 100%;
+        height: 50px; /* Bouton plus haut pour le tactile */
+    }
+
+    /* 7. Recommandations : on passe à 2 colonnes par ligne ou 1 seule */
+    .rec-card {
+        width: calc(50% - 10px); /* 2 cartes par ligne */
+        padding: 10px;
+    }
+
+    .rec-img {
+        height: 140px;
+    }
+
+    .a-retour {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        padding-bottom: 30px;
+    }
+
     /* Chaque cellule devient un bloc flexible */
     .shop_table td {
         display: flex !important;

@@ -63,59 +63,61 @@
 				</form>
 
 				<ul class="products">
-					{% for article in articles %}
-					{% if loop.index0 is divisible by(3) %}
-					<li class="product first">
-						{% else %}
-						{% if loop.index is divisible by(3) %}
-					<li class="product last">
-						{% else %}
-					<li class="product">
-						{% endif %}
-						{% endif %}
-						<div class="type-product">
-                            <a class="product-link" href="detailArticle?id={{ article.id }}">
-                                <img src="{{ asset(article.image) }}" class="product-img" alt="{{ article.titre }}" />
-                            </a>
+                    {% for article in articles %}
+                        {% set class = '' %}
+                        {% if loop.index0 is divisible by(3) %}{% set class = 'first' %}{% endif %}
+                        {% if loop.index is divisible by(3) %}{% set class = 'last' %}{% endif %}
 
-                            <div class="product-details-mobile">
-                                <h3>{{ article.titre }}</h3>
+                        {# On ajoute le curseur pointer et l'événement de clic sur toute la ligne #}
+                        <li class="product {{ class }}"
+                            onclick="window.location.href='detailArticle?id={{ article.id }}';"
+                            style="cursor: pointer;">
 
-                                <form action="ajouterLigne" method="GET" class="add-to-cart-form">
-                                    <input type="hidden" name="id" value="{{ article.id }}">
+                            <div class="type-product">
+                                {# Image simple (le lien est géré par le li) #}
+                                <div class="product-link">
+                                    <img src="{{ asset(article.image) }}" class="product-img" alt="{{ article.titre }}" />
+                                </div>
 
-                                    <div class="qty-wrapper">
-                                        <span class="price">
-                                            <ins><span class="amount">{{ article.prix }} €</span></ins>
-                                        </span>
-                                        <div>
-                                            <label>Qté:</label>
-                                            <input type="number" name="qty" value="1" min="1" max="{{ article.disponibilite }}">
+                                <div class="product-details-mobile">
+                                    <h3>{{ article.titre }}</h3>
+
+                                    {# STOP PROPAGATION : Empêche le clic sur le formulaire d'activer le lien du LI #}
+                                    <form action="ajouterLigne" method="GET" class="add-to-cart-form"
+                                        onclick="event.stopPropagation();">
+
+                                        <input type="hidden" name="id" value="{{ article.id }}">
+
+                                        <div class="qty-wrapper">
+                                            <span class="price">
+                                                <ins><span class="amount">{{ article.prix }} €</span></ins>
+                                            </span>
+                                            <div>
+                                                <label>Qté:</label>
+                                                <input type="number" name="qty" value="1" min="1" max="{{ article.disponibilite }}">
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <button type="submit" class="add_to_cart_button">
-                                        Ajouter au panier
-                                    </button>
-                                </form>
+                                        <button type="submit" class="add_to_cart_button">
+                                            Ajouter au panier
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
 
-						{% if article.pistes is defined %}
-						{% if article.pistes|length > 0 %}
-						<div id="jplayer_{{ article.id }}" class="jp-jplayer" data-idarticle="{{ article.id }}"
-							data-pistes="{{ article.pistes|json_encode() }}">
-							<audio id="audio"></audio>
-							<button class="prev-jplayer" id="prev"></button>
-							<button class="play-jplayer" id="play"></button>
-							<button class="next-jplayer" id="next"></button>
-							<ul id="playlist"></ul>
-						</div>
-						{% endif %}
-						{% endif %}
-					</li>
-					{% endfor %}
-				</ul>
+                            {# Lecteur audio : on bloque aussi la propagation pour pouvoir cliquer sur play sans changer de page #}
+                            {% if article.pistes is defined and article.pistes|length > 0 %}
+                                <div id="jplayer_{{ article.id }}" class="jp-jplayer" onclick="event.stopPropagation();">
+                                    <audio id="audio"></audio>
+                                    <button class="prev-jplayer" id="prev"></button>
+                                    <button class="play-jplayer" id="play"></button>
+                                    <button class="next-jplayer" id="next"></button>
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+
 
 				{# Autour de la ligne 132 dans ton fichier #}
                 {% if nombreDePages is defined and nombreDePages > 1 %}
