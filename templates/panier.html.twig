@@ -53,10 +53,17 @@
 									<a class="remove" title="Remove this item"
 										href="supprimerLigne?id={{ lignePanier.article.id }}">×</a>
 								</td>
-								<td class="product-thumbnail"><img class="attachment-shop_thumbnail wp-post-image"
-										width="145" height="145" alt="hoodie_4_front"
-										src="{{ asset(lignePanier.article.image) }}"></td>
-								<td class="product-name">{{ lignePanier.article.titre }}</td>
+								<td class="product-thumbnail">
+									<a href="detailArticle?id={{ lignePanier.article.id }}">
+										<img class="attachment-shop_thumbnail wp-post-image" width="145" height="145"
+											alt="hoodie_4_front" src="{{ asset(lignePanier.article.image) }}">
+									</a>
+								</td>
+								<td class="product-name">
+									<a href="detailArticle?id={{ lignePanier.article.id }}">
+										{{ lignePanier.article.titre }}
+									</a>
+								</td>
 								<td class="product-price">
 									<span class="amount">{{ lignePanier.prixUnitaire }}€</span>
 								</td>
@@ -65,7 +72,8 @@
 										<label class="screen-reader-text" for="quantity_{{ random }}">Quantity</label>
 										<input id="quantity_{{ random }}" class="input-text qty text" type="number"
 											size="4" title="Qty" value="{{ lignePanier.quantite }}"
-											name="cart[{{ lignePanier.article.id }}][qty]" min="1"  max="{{ lignePanier.article.disponibilite }}" step="1">
+											name="cart[{{ lignePanier.article.id }}][qty]" min="1"
+											max="{{ lignePanier.article.disponibilite }}" step="1">
 									</div>
 								</td>
 								<td class="product-subtotal">
@@ -78,6 +86,10 @@
 
 									inputs.forEach(input => {
 										input.addEventListener('change', function () {
+											const max = parseInt(this.getAttribute('max'));
+											if (parseInt(this.value) > max) {
+												this.value = max;
+											}
 
 											const form = this.closest('form');
 											const formData = new FormData(form);

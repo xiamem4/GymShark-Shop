@@ -1,0 +1,38 @@
+{# templates/admin.utilisateur.modifier.html.twig #}
+{% extends 'base.admin.html.twig' %}
+
+{% block body %}
+<div class="col-full" style="margin-top: 50px; background: #fff; padding: 20px; border: 1px solid #ccd0d4;">
+    <h2>Modifier l'utilisateur #{{ user.id }}</h2>
+
+    <form method="POST" action="">
+        <div style="margin-bottom: 20px;">
+            <label style="font-weight: bold; display: block;">Adresse Email :</label>
+            <input type="email" name="email" value="{{ user.email }}" required
+                style="width: 100%; max-width: 400px; padding: 8px;">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="font-weight: bold; display: block;">Nouveau mot de passe :</label>
+            <input type="password" name="password" placeholder="Laissez vide pour ne pas changer"
+                style="width: 100%; max-width: 400px; padding: 8px;">
+            <p style="font-size: 0.8em; color: #666;">Ne remplissez ce champ que si vous souhaitez réinitialiser son mot
+                de passe.</p>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="font-weight: bold; display: block;">Rôle :</label>
+            <select name="role" style="padding: 8px; width: 100%; max-width: 400px;">
+                <option value="ROLE_USER" {% if 'ROLE_ADMIN' not in user.roles %}selected{% endif %}>Client</option>
+                <option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %}selected{% endif %}>Administrateur
+                </option>
+            </select>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button type="submit" class="button">Enregistrer</button>
+            <a href="{{ path('admin_utilisateurs') }}" style="margin-left: 15px;">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

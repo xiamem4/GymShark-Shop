@@ -265,5 +265,27 @@ class Ebay{
 			return $response;
 		}
     }
+
+	/**
+	* Récupère l'intégralité des détails d'un objet (JSON complet)
+	*/
+	/**
+	* Récupère l'intégralité des détails d'un objet (JSON complet)
+	*/
+	public function getItemFullDetails($itemId) {
+		$headers = array(
+			'Content-Type: application/json',
+			'X-EBAY-C-MARKETPLACE-ID: ' . $this->globalId
+		);
+
+		// L'identifiant complet pour l'API Browse
+		$fullId = (strpos($itemId, 'v1|') === 0) ? $itemId : "v1|".$itemId."|0";
+		
+		$response = $this->curl($this->uri_item, "GET", $headers, '/' . urlencode($fullId));
+		
+		if ($response == null) { return null; }
+		
+		return json_decode($response, true);
+	}
 }
 ?>
