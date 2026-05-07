@@ -1,9 +1,16 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+<link rel="stylesheet" href="/css/jplayer.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+{% endblock %}
 {% block body %}
 <header id="header" class="col-full header-nav">
     <div id="logo">
-        <h1 class="site-title">The Shark</h1>
+        <a href="afficheRecherche">
+            <h1 class="site-title">The Shark</h1>
+        </a>
     </div>
     <nav id="site-navigation" class="main-navigation" role="navigation">
         <button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false"></button>
@@ -18,7 +25,6 @@
 
 <div class="col-full product-container">
 
-    {# Colonne gauche : Images #}
     <div class="product-image-section">
         <img id="main-product-image" src="{{ asset(article.image) }}" alt="{{ article.titre }}" class="main-img">
 
@@ -35,7 +41,6 @@
         {% endif %}
     </div>
 
-    {# Colonne droite : Informations #}
     <div class="product-info-section">
         <h2 class="product-title">{{ article.titre }}</h2>
 
@@ -63,7 +68,6 @@
         <a href="{{ path('afficheRecherche') }}" class="a-retour">&larr; Retour à la Recherche</a>
     </div>
 
-    {# Recommandations #}
     {% if articlesSimilaires is defined and articlesSimilaires is not empty %}
     <div class="recommendations-section">
         <h3 style="text-align: center; margin-bottom: 20px;">Vous aimerez aussi</h3>

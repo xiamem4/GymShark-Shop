@@ -2372,12 +2372,123 @@ nav>button.menu-toggle:hover {
     text-overflow: ellipsis;
 }
 
+/* Global et Conteneur */
+.conf-container {
+    margin: 50px auto;
+    max-width: 900px; /* Pour éviter que le tableau soit trop large sur grand écran */
+    padding: 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Titres avec Bebas Neue pour la cohérence */
+.status-box h2, h3, .site-title {
+    font-family: 'Bebas Neue', cursive;
+    letter-spacing: 1px;
+}
+
+.status-box {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.status-box h2 {
+    color: #111;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.status-msg {
+    font-size: 1.1em;
+    color: #27ae60;
+    font-weight: bold;
+}
+
+/* Tableau de commande */
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+}
+
+.order-table thead tr {
+    border-bottom: 3px solid #111; /* Ligne plus épaisse pour le look Shark */
+}
+
+.order-table th {
+    color: #666;
+    padding: 15px 10px;
+}
+
+.order-table td {
+    padding: 20px 10px;
+}
+
+.order-table tbody tr {
+    border-bottom: 1px solid #eee;
+}
+
+/* Utilitaires de texte */
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+
+/* Lignes de total */
+.total-row {
+    border-top: 2px solid #111;
+}
+
+.total-row th, .total-row td {
+    padding: 15px 10px;
+}
+
+.final-total {
+    font-size: 1.8em;
+    color: #111;
+    font-family: 'Bebas Neue', cursive;
+}
+
+/* Bouton Accueil */
+.btn-home {
+    display: inline-block;
+    background-color: #111;
+    color: #fff;
+    padding: 15px 35px;
+    text-decoration: none;
+    border-radius: 0; /* Carré pour un look plus pro/moderne */
+    text-transform: uppercase;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.2em;
+    transition: background 0.3s ease;
+}
+
+.btn-home:hover {
+    background-color: #444;
+}
+
 @media (max-width: 768px) {
-    .product-container {
-        margin-top: 120px; /* On réduit un peu la marge haute sur mobile */
-        flex-direction: column;
-        gap: 20px;
-        padding: 0 15px; /* On ajoute un peu d'espace sur les côtés */
+    .conf-container {
+        margin-top: 20px;
+    }
+
+    /* On cache la colonne quantité dans le corps du tableau */
+    .order-table th:nth-child(2),
+    .order-table td:nth-child(2) {
+        display: none;
+    }
+
+    /* CORRECTION ICI : On force le titre des totaux à ne prendre qu'une colonne */
+    .order-table tfoot th[colspan="2"] {
+        colspan: 1; /* Note: Le CSS ne change pas l'attribut HTML, on gère ça en dessous */
+        text-align: left;
+        padding-left: 10px;
+    }
+
+    /* On s'assure que la table ne dépasse pas */
+    .order-table {
+        display: table;
+        width: 100%;
     }
 
     /* 2. On remet les sections à 100% de largeur */
