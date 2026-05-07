@@ -233,7 +233,6 @@ button,
 input,
 textarea {
     color: #43454b;
-    line-height: 1.618;
     text-rendering: optimizeLegibility;
     font-weight: 400
 }
@@ -1720,7 +1719,6 @@ button.menu-toggle:after {
     display: inline-block;
     padding: .3342343017em .875em;
     background-color: rgba(0, 0, 0, .025);
-    color: #43454b
 }
 
 .pagination .page-numbers li .page-numbers.current,
@@ -2108,6 +2106,7 @@ nav>button.menu-toggle:hover {
     min-width: 40px;
     height: 40px;
     border: 1px solid #EDAC61;
+    border-left-width: 1px !important;
     border-radius: 4px;
     color: #333;
     text-decoration: none;
@@ -2354,7 +2353,6 @@ nav>button.menu-toggle:hover {
 
 .status-box h2, h3, .site-title {
     font-family: 'Bebas Neue', cursive;
-    letter-spacing: 1px;
 }
 
 .status-box {

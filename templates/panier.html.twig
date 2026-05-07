@@ -3,11 +3,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 {% endblock %}
 {% block body %}
 <header id="header" class="col-full header-nav">
 	<div id="logo">
-		<h1 class="site-title">The Shark</h1>
+		<a href="afficheRecherche">
+            <h1 class="site-title">The Shark</h1>
+        </a>
 	</div>
 
 	<nav id="site-navigation" class="main-navigation" role="navigation">
@@ -20,15 +23,14 @@
 					<a href="{{ path('accederAuPanier') }}">Panier</a>
 				</li>
 
-				{# --- AJOUT DU BLOC DYNAMIQUE ICI --- #}
 				{% if app.user %}
-				<li class="page_item">
-					<a href="{{ path('app_profil') }}" style="color: #ff0000; font-weight: bold;">Mon Profil</a>
-				{% else %}
-				<li class="page_item">
-					<a href="{{ path('app_login') }}">Connexion</a>
-				</li>
-				{% endif %}
+                <li class="page_item">
+                    <a href="{{ path('app_profil') }}" style="font-weight: bold;"><i class="fa-solid fa-user"></i></a>
+                    {% else %}
+                <li class="page_item">
+                    <a href="{{ path('app_login') }}"><i class="fa-solid fa-user"></i></a>
+                </li>
+                {% endif %}
 			</ul>
 		</div>
 	</nav>

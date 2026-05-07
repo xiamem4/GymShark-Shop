@@ -1,60 +1,68 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+<link rel="stylesheet" href="/css/jplayer.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+{% endblock %}
 {% block body %}
     <header id="header" class="col-full">
-        <div id="logo">
+    <div id="logo">
+        <a href="afficheRecherche">
             <h1 class="site-title">The Shark</h1>
-        </div>
-    </header>
-
-    <div class="col-full" style="margin-top: 50px;">
-        <div style="text-align: center; margin-bottom: 40px;">
-            <h2 style="color: #333;">Confirmation de votre commande</h2>
-            <p style="font-size: 1.2em; color: green;">✅ Merci ! Votre commande a bien été enregistrée.</p>
-        </div>
-
-        <h3>Résumé de votre commande :</h3>
-        <table class="shop_table" style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
-            <thead>
-                <tr style="border-bottom: 2px solid #ccc;">
-                    <th style="text-align: left; padding: 10px;">Article</th>
-                    <th style="text-align: center; padding: 10px;">Quantité</th>
-                    <th style="text-align: right; padding: 10px;">Prix</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for ligne in panier.lignesPanier %}
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 10px;">{{ ligne.article.titre }}</td>
-                        <td style="padding: 10px; text-align: center;">{{ ligne.quantite }}</td>
-                        <td style="padding: 10px; text-align: right;">{{ ligne.prixUnitaire }} €</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot style="border-top: 2px solid #ccc;">
-                <tr>
-                    <th colspan="2" style="text-align: right; padding: 10px;">Sous-total :</th>
-                    <td style="text-align: right; padding: 10px;">{{ panier.sousTotal }} €</td>
-                </tr>
-                <tr>
-                    <th colspan="2" style="text-align: right; padding: 10px;">
-                        Frais de port ({{ panier.tauxFraisPort }} %) :
-                    </th>
-                    <td style="text-align: right; padding: 10px;">{{ panier.montantFraisPort }} €</td>
-                </tr>
-                <tr>
-                    <th colspan="2" style="text-align: right; padding: 20px 10px;">Total à régler :</th>
-                    <th style="text-align: right; padding: 20px 10px; font-size: 1.4em; color: #111;">
-                        {{ panier.total }} €
-                    </th>
-                </tr>
-            </tfoot>
-        </table>
-
-        <div style="text-align: center; margin-top: 40px;">
-            <a href="/" class="button" style="background-color: #333; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
-                Retour à l'accueil
-            </a>
-        </div>
+        </a>
     </div>
+</header>
+
+<div class="col-full conf-container">
+    <div class="status-box">
+        <h2>Confirmation de votre commande</h2>
+        <p class="status-msg">✅ Merci ! Votre commande a bien été enregistrée.</p>
+    </div>
+
+    <h3>Résumé de votre commande :</h3>
+    <table class="order-table">
+        <thead>
+            <tr>
+                <th>Article</th>
+                <th class="text-center">Quantité</th>
+                <th class="text-right">Prix</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ligne in panier.lignesPanier %}
+                <tr>
+                    <td>{{ ligne.article.titre }}</td>
+                    <td class="text-center">{{ ligne.quantite }}</td>
+                    <td class="text-right">{{ ligne.prixUnitaire }} €</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot class="total-row">
+            <tr>
+                <th class="text-right">Sous-total :</th>
+                <td class="text-center mobile-hide"></td>
+                <td class="text-right">{{ panier.sousTotal }} €</td>
+            </tr>
+            <tr>
+                <th class="text-right">Frais de port ({{ panier.tauxFraisPort }} %) :</th>
+                <td class="text-center mobile-hide"></td>
+                <td class="text-right">{{ panier.montantFraisPort }} €</td>
+            </tr>
+            <tr>
+                <th class="text-right" style="padding: 20px 10px;">Total à régler :</th>
+                <td class="text-center mobile-hide"></td>
+                <th class="text-right final-total" style="padding: 20px 10px;">
+                    {{ panier.total }} €
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="text-center" style="margin-top: 40px;">
+        <a href="/" class="btn-home">
+            Retour à l'accueil
+        </a>
+    </div>
+</div>
 {% endblock %}
