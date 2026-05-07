@@ -2467,7 +2467,108 @@ nav>button.menu-toggle:hover {
     background-color: #444;
 }
 
+
+
+/* Conteneur principal */
+.shark-reg-container {
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 30px;
+    /* Utilisation du beige clair pour le fond du conteneur ou rester sur blanc avec bordure colorée */
+    background: #ffffff;
+    border: 2px solid #f5dbbe;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(237, 172, 97, 0.1); /* Ombre légère aux tons orangés */
+}
+
+.title-reg {
+    text-align: center;
+    color: #111;
+    font-family: 'Bebas Neue', cursive;
+}
+
+/* Espacement des blocs */
+.shark-reg-row {
+    margin-bottom: 20px;
+}
+
+/* Labels en orange/ocre */
+.shark-reg-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    color: #edac61 !important; /* Ta couleur principale demandée */
+    letter-spacing: 0.5px;
+}
+
+/* Style des champs de texte */
+.shark-reg-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #f5dbbe; /* Bordure beige clair */
+    background: #fff;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.shark-reg-input:focus {
+    border-color: #edac61; /* Change vers l'orange au focus */
+    background-color: #fcf8f3; /* Très léger reflet beige au focus */
+    outline: none;
+}
+
+/* Checkbox et label */
+.shark-reg-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 25px 0;
+}
+
+.shark-reg-checkbox-group input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #edac61; /* Colorie la checkbox elle-même */
+}
+
+/* Bouton Register */
+.shark-reg-btn {
+    width: 100%;
+    background-color: #edac61; /* Garde le noir pour le contraste */
+    padding: 18px;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.6rem;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.shark-reg-btn:hover {
+    background-color: #111; /* Inverse les couleurs au survol */
+    color: #fff;
+}
+
+/* Erreurs de formulaire */
+.shark-reg-error {
+    background: #fff0f0;
+    color: #d9534f;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-left: 4px solid #edac61; /* Rappel de ta couleur même sur l'erreur */
+    font-size: 0.9rem;
+}
+
 @media (max-width: 768px) {
+    .shark-reg-container {
+        margin: 20px;
+        padding: 20px;
+        box-shadow: none;
+    }
+
     .conf-container {
         margin-top: 20px;
     }

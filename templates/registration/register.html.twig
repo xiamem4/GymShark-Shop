@@ -1,19 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/jplayer.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <h1 class="title-reg">S'incrire</h1>
 
-    {{ form_errors(registrationForm) }}
+    <div class="shark-reg-container">
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {% if form_errors(registrationForm) %}
+            <div class="shark-reg-error">
+                {{ form_errors(registrationForm) }}
+            </div>
+        {% endif %}
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        {{ form_start(registrationForm) }}
+
+            <div class="shark-reg-row">
+                {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'shark-reg-label'}}) }}
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'shark-reg-input', 'placeholder': 'votre@email.com'}}) }}
+            </div>
+
+            <div class="shark-reg-row">
+                {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'shark-reg-label'}}) }}
+                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'shark-reg-input', 'placeholder': 'Mot de passe'}}) }}
+            </div>
+
+            <div class="shark-reg-checkbox-group">
+                {{ form_widget(registrationForm.agreeTerms) }}
+                {{ form_label(registrationForm.agreeTerms, "J'accepte les conditions", {'label_attr': {'style': 'margin:0; font-size: 0.85rem;'}}) }}
+            </div>
+
+            <button type="submit" class="shark-reg-btn">S'inscrire</button>
+
+        {{ form_end(registrationForm) }}
+    </div>
 {% endblock %}
