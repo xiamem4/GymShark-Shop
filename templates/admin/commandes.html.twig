@@ -1,0 +1,45 @@
+{% extends 'base.admin.html.twig' %}
+
+{% block title %}Gestion des commandes{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-4">
+    <h1>Historique des ventes</h1>
+
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Date</th>
+                <th>Référence</th>
+                <th>Client</th>
+                <th>Articles</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for commande in commandes %}
+            <tr>
+                <td>{{ commande.dateCreation|date('d/m/Y H:i') }}</td>
+                <td><code>{{ commande.reference }}</code></td>
+                <td>
+                    <strong>{{ commande.utilisateur.nom|upper }} {{ commande.utilisateur.prenom }}</strong><br>
+                    <small class="text-muted">{{ commande.utilisateur.email }}</small>
+                </td>
+                <td>
+                    <ul class="list-unstyled mb-0">
+                        {% for ligne in commande.lignes %}
+                        <li>{{ ligne.quantite }}x {{ ligne.article.titre }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td class="fw-bold text-primary">{{ commande.total }} €</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">Aucune commande passée pour le moment.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

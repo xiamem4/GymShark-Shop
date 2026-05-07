@@ -1,88 +1,132 @@
 {% extends 'base.html.twig' %}
-{% block stylesheets %}
-<link rel="stylesheet" href="/css/jplayer.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-{% endblock %}
+
 {% block body %}
 <header id="header" class="col-full header-nav">
-    <div id="logo">
-        <a href="afficheRecherche">
-            <h1 class="site-title">The Shark</h1>
-        </a>
-    </div>
-    <nav id="site-navigation" class="main-navigation" role="navigation">
-        <button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false"></button>
-        <div class="menu">
-            <ul class="nav-menu">
-                <li class="page_item"><a href="afficheRecherche">Rechercher un article</a></li>
-                <li class="page_item current_page_item focus"><a href="accederAuPanier">Panier</a></li>
-            </ul>
-        </div>
-    </nav>
+	<div id="logo">
+		<h1 class="site-title">The Shark</h1>
+	</div>
+
+	<nav id="site-navigation" class="main-navigation" role="navigation">
+		<div class="menu">
+			<ul class="nav-menu">
+				<li class="page_item">
+					<a href="{{ path('afficheRecherche') }}">Rechercher</a>
+				</li>
+				<li class="page_item">
+					<a href="{{ path('accederAuPanier') }}">Panier</a>
+				</li>
+
+				{# --- AJOUT DU BLOC DYNAMIQUE ICI --- #}
+				{% if app.user %}
+				<li class="page_item">
+					<a href="{{ path('app_profil') }}" style="color: #ff0000; font-weight: bold;">Mon Profil</a>
+				{% else %}
+				<li class="page_item">
+					<a href="{{ path('app_login') }}">Connexion</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
 </header>
 
-<div class="col-full product-container">
-
-    <div class="product-image-section">
-        <img id="main-product-image" src="{{ asset(article.image) }}" alt="{{ article.titre }}" class="main-img">
-
+<div class="col-full" style="margin-top: 50px; display: flex; flex-wrap: wrap; gap: 40px; font-family: sans-serif;">
+    
+    {# Colonne gauche : Image Principale et Galerie #}
+    <div style="flex: 1; min-width: 300px; text-align: center;">
+        
+        <img id="main-product-image" src="{{ asset(article.image) }}" alt="{{ article.titre }}" style="width: 100%; max-width: 450px; border: 1px solid #eee; border-radius: 8px; object-fit: contain; background: #fff;">
+        
+        {# Galerie de photos supplémentaires #}
         {% if article.imagesSupplementaires is defined and article.imagesSupplementaires is not empty %}
-        <div class="gallery-container">
-            <img src="{{ asset(article.image) }}" alt="Miniature" class="thumb-img"
-                 onclick="document.getElementById('main-product-image').src=this.src;">
-
+        <div class="gallery" style="display: flex; gap: 10px; margin-top: 20px; justify-content: center; flex-wrap: wrap;">
+            
+            {# La miniature de l'image principale #}
+            <img src="{{ asset(article.image) }}" alt="Miniature principale" 
+                 onclick="document.getElementById('main-product-image').src=this.src;" 
+                 style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; transition: transform 0.2s;"
+                 onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                 
+            {# Boucle sur les autres miniatures #}
             {% for photo in article.imagesSupplementaires %}
-                <img src="{{ asset(photo) }}" alt="Miniature" class="thumb-img"
-                     onclick="document.getElementById('main-product-image').src=this.src;">
+                <img src="{{ asset(photo) }}" alt="Miniature" 
+                     onclick="document.getElementById('main-product-image').src=this.src;" 
+                     style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; transition: transform 0.2s;"
+                     onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
             {% endfor %}
+            
         </div>
         {% endif %}
     </div>
 
-    <div class="product-info-section">
-        <h2 class="product-title">{{ article.titre }}</h2>
-
+    {# Colonne droite : Informations #}
+    <div style="flex: 2; min-width: 300px;">
+        <h2 style="font-size: 2em; margin-bottom: 10px; color: #333;">{{ article.titre }}</h2>
+        
+        {# Affichage de la Taille conditionné #}
         {% if article.taille is defined and article.taille is not empty %}
-            <p><strong>Taille :</strong> {{ article.taille }}</p>
+            <p style="font-size: 1.1em; margin-bottom: 15px;"><strong>Taille :</strong> {{ article.taille }}</p>
         {% endif %}
 
-        <p class="product-price">{{ article.prix }} €</p>
+        <p class="price" style="font-size: 1.8em; color: #111; font-weight: bold; margin: 15px 0;">{{ article.prix }} €</p>
 
-        <div class="shipping-box">
-            <p><strong>Provenance :</strong> {{ article.lieuExpedition|default('Non précisé') }}</p>
-            <p><strong>Délai de livraison :</strong> {{ article.delaiLivraison|default('Non précisé') }}</p>
+        {# Informations de Livraison #}
+        <div style="background: #f9f9f9; padding: 20px; margin: 25px 0; border-radius: 4px;">
+            <p style="margin: 0 0 15px 0; color: #444;"><strong>Provenance :</strong> {{ article.lieuExpedition|default('Non précisé') }}</p>
+            <p style="margin: 0; color: #444;"><strong>Délai de livraison estimé :</strong> {{ article.delaiLivraison|default('Non précisé') }}</p>
         </div>
 
-        <p><strong>Disponibilité :</strong> {{ article.disponibilite }} en stock</p>
+        <p style="margin-bottom: 30px; color: #444;">
+            <strong>Disponibilité :</strong> {{ article.disponibilite }} en stock
+        </p>
 
-        <form action="ajouterLigne" method="GET" class="cart-form">
+        {# Formulaire d'ajout au panier #}
+        <form action="ajouterLigne" method="GET" style="display: flex; align-items: center; gap: 15px; margin-bottom: 30px;">
             <input type="hidden" name="id" value="{{ article.id }}">
-            <div class="qty-wrapper">
-                <input type="number" name="qty" value="1" min="1" max="{{ article.disponibilite }}" class="qty-input">
+            
+            <div style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; background: #f9f9f9;">
+                <input type="number" name="qty" value="1" min="1" max="{{ article.disponibilite }}" style="width: 50px; height: 40px; text-align: center; border: none; background: transparent; font-size: 1.1em;">
             </div>
-            <button type="submit" class="btn-add-cart">Ajouter au panier</button>
+            
+            <button type="submit" style="height: 42px; padding: 0 25px; background-color: #f0ad4e; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: bold; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#ec971f'" onmouseout="this.style.backgroundColor='#f0ad4e'">
+                Ajouter au panier
+            </button>
         </form>
 
-        <a href="{{ path('afficheRecherche') }}" class="a-retour">&larr; Retour à la Recherche</a>
+        <a href="{{ path('afficheRecherche') }}" style="text-decoration: none; color: #666; font-size: 0.9em;">&larr; Retour aux résultats de recherche</a>
     </div>
-
+    {# --- SECTION SYSTÈME DE RECOMMANDATION --- #}
     {% if articlesSimilaires is defined and articlesSimilaires is not empty %}
-    <div class="recommendations-section">
-        <h3 style="text-align: center; margin-bottom: 20px;">Vous aimerez aussi</h3>
-        <div class="rec-grid">
+    <div style="width: 100%; margin-top: 60px; border-top: 1px solid #ddd; padding-top: 30px;">
+        <h3 style="font-size: 1.5em; color: #333; margin-bottom: 20px; text-align: center;">Vous aimerez aussi</h3>
+        
+        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
             {% for similaire in articlesSimilaires %}
-                <div class="rec-card">
-                    <a href="detailArticle?id={{ similaire.id }}" style="text-decoration: none; color: inherit;">
-                        <img src="{{ asset(similaire.image) }}" alt="{{ similaire.titre }}" class="rec-img">
-                        <h4 class="rec-title">{{ similaire.titre }}</h4>
-                        <p style="font-weight: bold;">{{ similaire.prix }} €</p>
+                {# Carte Produit Similaire #}
+                <div style="width: 200px; border: 1px solid #eee; border-radius: 8px; padding: 15px; text-align: center; background: #fff; transition: box-shadow 0.2s, transform 0.2s;" 
+                     onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'; this.style.transform='translateY(-5px)';" 
+                     onmouseout="this.style.boxShadow='none'; this.style.transform='translateY(0)';">
+                    
+                    <a href="detailArticle?id={{ similaire.id }}" style="text-decoration: none; color: inherit; display: block;">
+                        {# Image miniature #}
+                        <img src="{{ asset(similaire.image) }}" alt="{{ similaire.titre }}" style="width: 100%; height: 180px; object-fit: contain; margin-bottom: 15px;">
+                        
+                        {# Titre coupé s'il est trop long #}
+                        <h4 style="font-size: 0.9em; margin: 0 0 10px 0; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            {{ similaire.titre }}
+                        </h4>
+                        
+                        {# Prix #}
+                        <p style="font-size: 1.2em; font-weight: bold; color: #111; margin: 0;">
+                            {{ similaire.prix }} €
+                        </p>
                     </a>
+                    
                 </div>
             {% endfor %}
         </div>
     </div>
     {% endif %}
+    
 </div>
 {% endblock %}

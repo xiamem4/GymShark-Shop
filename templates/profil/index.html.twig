@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+<header id="header" class="col-full header-nav">
+	<div id="logo">
+		<h1 class="site-title">The Shark</h1>
+	</div>
+
+	<nav id="site-navigation" class="main-navigation" role="navigation">
+		<div class="menu">
+			<ul class="nav-menu">
+				<li class="page_item">
+					<a href="{{ path('afficheRecherche') }}">Rechercher</a>
+				</li>
+				<li class="page_item">
+					<a href="{{ path('accederAuPanier') }}">Panier</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+</header>
+
+<div class="container mt-5">
+    <h1>Mon Profil</h1>
+
+    <div class="row mt-4">
+        {# --- SECTION : INFORMATIONS PERSONNELLES --- #}
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">
+                    Mes informations
+                </div>
+                <div class="card-body">
+                    <p><strong>Email :</strong> {{ user.email }}</p>
+                    <p><strong>Nom d'utilisateur :</strong> {{ user.nomUtilisateur ?? 'Non renseigné' }}</p>
+                    <p><strong>Nom / Prénom :</strong> {{ user.nom ?? '' }} {{ user.prenom ?? '' }}</p>
+                    <p><strong>Téléphone :</strong> {{ user.telephone ?? 'Non renseigné' }}</p>
+                    <p><strong>Date de naissance :</strong>
+                        {% if user.dateNaissance %}
+                        {{ user.dateNaissance|date('d/m/Y') }}
+                        {% else %}
+                        Non renseignée
+                        {% endif %}
+                    </p>
+                    <p><strong>Adresse de livraison :</strong><br>
+                        {{ (user.adresseLivraison ?? 'Non renseignée')|nl2br }}
+                    </p>
+                    <hr>
+                    <div class="d-grid gap-2">
+                        <a href="{{ path('app_logout') }}" class="btn btn-danger">
+                            <i class="fa fa-sign-out"></i> Déconnexion
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# --- SECTION : HISTORIQUE D'ACHAT --- #}
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header">
+                    Mon historique d'achat
+                </div>
+                <div class="card-body">
+                    {% if user.commandes is empty %}
+                    <p>Vous n'avez pas encore passé de commande.</p>
+                    {% else %}
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Référence</th>
+                                <th>Total</th>
+                                <th>Détails</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for commande in user.commandes %}
+                            <tr>
+                                <td>{{ commande.dateCreation|date('d/m/Y à H:i') }}</td>
+                                <td>{{ commande.reference }}</td>
+                                <td>{{ commande.total }} €</td>
+                                <td>
+                                    {# Petite liste pour afficher les articles achetés dans cette commande #}
+                                    <ul>
+                                        {% for ligne in commande.lignes %}
+                                        <li>{{ ligne.quantite }}x {{ ligne.article.titre }} ({{ ligne.prixUnitaire }} €)
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

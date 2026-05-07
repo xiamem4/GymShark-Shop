@@ -40,7 +40,7 @@
 		{{ encore_entry_link_tags('app') }}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
-
+            
 		{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 		{{ encore_entry_script_tags('app') }}
@@ -52,14 +52,17 @@
 				<script type="text/javascript" src="{{ asset('js/themes/storefront/assets/js/navigation.min.js') }}"></script>
 				{% block javascripts %}
             {{ encore_entry_script_tags('app') }}
-
+            
 				{% endblock %}
 				<footer id="footer" class="col-full">
 					<div id="credit" class="col-right">
 						<p>
+							<object type="image/svg+xml" data="{{ asset('images/spotify.svg') }}" width="152" height="34"></object>
 						</p>
 						<p>
-							<a>
+							Designed by
+							<a title="Premium WordPress Themes & Plugins by WooThemes" alt="Premium WordPress Themes & Plugins by WooThemes" href="http://www.woothemes.com/">
+								<img width="74" height="19" alt="WooThemes" src="{{ asset('images/woothemes.png') }}">
 							</a>
 						</p>
 					</div>

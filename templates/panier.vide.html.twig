@@ -5,41 +5,47 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 {% endblock %}
 {% block body %}
-    <header id="header" class="col-full header-nav">
-        <div id="logo">
-            <a href="afficheRecherche">
-                <h1 class="site-title">The Shark</h1>
-            </a>
-        </div>
-        <nav id="site-navigation" class="main-navigation" role="navigation">
-            <button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
-            </button>
-            <div class="menu">
-                <ul class="nav-menu">
-                    <li class="page_item page-item-1">
-                        <a href="afficheRecherche">Rechercher
-                            un article</a>
-                    </li>
-                    <li class="page_item page-item-2 current_page_item focus">
-                        <a href="accederAuPanier">Panier</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-    <div id="content" class="col-full">
-        <div id="main-sidebar-container">
-            <header>
-                <h1 class="title entry-title">Panier</h1>
-            </header>
-            <div class="woocommerce">
-                <section class="entry">
-                    <p class="cart-empty">Votre panier est vide.</p>
-                </section>
-            </div>
-            <a href="afficheRecherche" class="button">
-                Rechercher des articles
-            </a>
-        </div>
-    </div>
+<header id="header" class="col-full header-nav">
+	<div id="logo">
+		<h1 class="site-title">The Shark</h1>
+	</div>
+
+	<nav id="site-navigation" class="main-navigation" role="navigation">
+		<div class="menu">
+			<ul class="nav-menu">
+				<li class="page_item">
+					<a href="{{ path('afficheRecherche') }}">Rechercher</a>
+				</li>
+				<li class="page_item">
+					<a href="{{ path('accederAuPanier') }}">Panier</a>
+				</li>
+
+				{# --- AJOUT DU BLOC DYNAMIQUE ICI --- #}
+				{% if app.user %}
+				<li class="page_item">
+					<a href="{{ path('app_profil') }}" style="color: #ff0000; font-weight: bold;">Mon Profil</a>
+					{% else %}
+				<li class="page_item">
+					<a href="{{ path('app_login') }}">Connexion</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
+</header>
+<div id="content" class="col-full">
+	<div id="main-sidebar-container">
+		<header>
+			<h1 class="title entry-title">Panier</h1>
+		</header>
+		<div class="woocommerce">
+			<section class="entry">
+				<p class="cart-empty">Votre panier est vide.</p>
+			</section>
+		</div>
+		<a href="afficheRecherche" class="button">
+			Rechercher des articles
+		</a>
+	</div>
+</div>
 {% endblock %}

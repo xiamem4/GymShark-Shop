@@ -1,52 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="/css/jplayer.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-{% endblock %}
-
-{% block title %}Log in! - The Shark{% endblock %}
+{% block title %}Log in!{% endblock %}
 
 {% block body %}
-    <h1 class="title-reg">Se connecter</h1>
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
 
-    <div class="shark-reg-container">
-        <form method="post">
-            {% if error %}
-                <div class="shark-reg-error">
-                    {{ error.messageKey|trans(error.messageData, 'security') }}
-                </div>
-            {% endif %}
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ logout_path() }}">Logout</a>
+        </div>
+    {% endif %}
 
-            {% if app.user %}
-                <div class="shark-reg-row" style="text-align: center; color: #edac61;">
-                    Vous êtes connecté en tant que {{ app.user.userIdentifier }},
-                    <a href="{{ logout_path() }}" style="color: #111; font-weight: bold;">Déconnexion</a>
-                </div>
-            {% endif %}
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputEmail">Email</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
-            <div class="shark-reg-row">
-                <label for="inputEmail" class="shark-reg-label">Email</label>
-                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="shark-reg-input" autocomplete="email" required autofocus placeholder="votre@email.com">
-            </div>
-
-            <div class="shark-reg-row">
-                <label for="inputPassword" class="shark-reg-label">Mot de passe</label>
-                <input type="password" name="password" id="inputPassword" class="shark-reg-input" autocomplete="current-password" required placeholder="******">
-            </div>
-
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-            <div class="shark-reg-checkbox-group">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me" style="margin:0; font-size: 0.85rem;">Se rapeller de moi</label>
-            </div>
-
-            <button class="shark-reg-btn" type="submit">
-                Sign in
-            </button>
-        </form>
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" name="_remember_me"> Remember me
+        </label>
     </div>
+
+    <button class="btn btn-lg btn-primary" type="submit">
+        Sign in
+    </button>
+</form>
 {% endblock %}

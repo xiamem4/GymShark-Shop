@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-
 {% block stylesheets %}
 <link rel="stylesheet" href="/css/jplayer.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,142 +8,164 @@
 
 {% block body %}
 <header id="header" class="col-full header-nav">
-    <div id="logo">
-        <a href="afficheRecherche">
-            <h1 class="site-title">The Shark</h1>
-        </a>
-    </div>
-    <nav id="site-navigation" class="main-navigation" role="navigation">
-        <button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
-        </button>
-        <div class="menu">
-            <ul class="nav-menu">
-                <li class="page_item page-item-1 current_page_item focus">
-                    <a href="afficheRecherche">Rechercher
-                        un article</a>
-                </li>
-                <li class="page_item page-item-2">
-                    <a href="accederAuPanier">Panier</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+	<div id="logo">
+		<h1 class="site-title">The Shark</h1>
+	</div>
+
+	<nav id="site-navigation" class="main-navigation" role="navigation">
+		<div class="menu">
+			<ul class="nav-menu">
+				<li class="page_item">
+					<a href="{{ path('afficheRecherche') }}">Rechercher</a>
+				</li>
+				<li class="page_item">
+					<a href="{{ path('accederAuPanier') }}">Panier</a>
+				</li>
+
+				{# --- AJOUT DU BLOC DYNAMIQUE ICI --- #}
+				{% if app.user %}
+				<li class="page_item">
+					<a href="{{ path('app_profil') }}" style="color: #ff0000; font-weight: bold;">Mon Profil</a>
+				{% else %}
+				<li class="page_item">
+					<a href="{{ path('app_login') }}">Connexion</a>
+				</li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
 </header>
+
 <div id="content" class="site-content" tabindex="-1">
-    <div class="col-full">
-        <div id="primary">
-            <main id="main" class="site-main" role="main">
-                <header class="woocommerce-products-header">
-                    <h1 class="woocommerce-products-header__title page-title"></h1>
-                </header>
+	<div class="col-full">
+		<div id="primary">
+			<main id="main" class="site-main" role="main">
+				<header class="woocommerce-products-header">
+					<h1 class="woocommerce-products-header__title page-title">Résultats de la recherche</h1>
+				</header>
 
-                <form method="GET" action="{{ path(app.request.attributes.get('_route')) }}"
-                    style="margin-bottom: 20px; text-align: right;" class="sorting-form">
+				{# Formulaire de tri #}
+				<form method="GET" action="{{ path(app.request.attributes.get('_route')) }}"
+					style="margin-bottom: 20px; text-align: right;">
 
-                    <select name="tri" class="orderby" onchange="this.form.submit()"
-                        style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
-                        <option value="titre_asc" {% if app.request.query.get('tri')=='titre_asc' %}selected{% endif %}>
-                            Trier par nom (A-Z)</option>
-                        <option value="titre_desc" {% if app.request.query.get('tri')=='titre_desc' %}selected{% endif
-                            %}>Trier par nom (Z-A)</option>
-                        <option value="prix_asc" {% if app.request.query.get('tri')=='prix_asc' %}selected{% endif %}>
-                            Trier par prix croissant</option>
-                        <option value="prix_desc" {% if app.request.query.get('tri')=='prix_desc' %}selected{% endif %}>
-                            Trier par prix décroissant</option>
-                        <option value="stock_desc" {% if app.request.query.get('tri')=='stock_desc' %}selected{% endif
-                            %}>Trier par disponibilité (+ au -)</option>
-                        <option value="stock_asc" {% if app.request.query.get('tri')=='stock_asc' %}selected{% endif %}>
-                            Trier par disponibilité (- au +)</option>
-                    </select>
-                </form>
+					{% if app.request.query.get('motCle') is not empty %}
+					<input type="hidden" name="motCle" value="{{ app.request.query.get('motCle') }}">
+					{% endif %}
 
-                <ul class="products">
-                    {% for article in articles %}
-                        {% set class = '' %}
-                        {% if loop.index0 is divisible by(3) %}{% set class = 'first' %}{% endif %}
-                        {% if loop.index is divisible by(3) %}{% set class = 'last' %}{% endif %}
+					<select name="tri" class="orderby" onchange="this.form.submit()"
+						style="padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+						<option value="titre_asc" {% if app.request.query.get('tri')=='titre_asc' %}selected{% endif %}>
+							Trier par nom (A-Z)</option>
+						<option value="titre_desc" {% if app.request.query.get('tri')=='titre_desc' %}selected{% endif
+							%}>Trier par nom (Z-A)</option>
+						<option value="prix_asc" {% if app.request.query.get('tri')=='prix_asc' %}selected{% endif %}>
+							Trier par prix croissant</option>
+						<option value="prix_desc" {% if app.request.query.get('tri')=='prix_desc' %}selected{% endif %}>
+							Trier par prix décroissant</option>
+						<option value="stock_desc" {% if app.request.query.get('tri')=='stock_desc' %}selected{% endif
+							%}>Trier par disponibilité (+ au -)</option>
+						<option value="stock_asc" {% if app.request.query.get('tri')=='stock_asc' %}selected{% endif %}>
+							Trier par disponibilité (- au +)</option>
+					</select>
+				</form>
 
-                        <li class="product {{ class }}"
-                            onclick="window.location.href='detailArticle?id={{ article.id }}';"
-                            style="cursor: pointer;">
+				<ul class="products">
+					{% for article in articles %}
+					{% if loop.index0 is divisible by(3) %}
+					<li class="product type-product first">
+						{% else %}
+						{% if loop.index is divisible by(3) %}
+					<li class="product type-product last">
+						{% else %}
+					<li class="product type-product">
+						{% endif %}
+						{% endif %}
+						<a class="woocommerce-LoopProduct-link woocommerce-loop-product__link"
+							href="detailArticle?id={{ article.id }}">
+							<img src="{{ asset(article.image) }}"
+								class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="poster_2_up" />
+							<h3>{{ article.titre }}</h3>
+							<span class="price">
+								<ins>
+									<span class="amount">{{ article.prix }}
+										€</span>
+								</ins>
+							</span>
 
-                            <div class="type-product">
-                                <div class="product-link">
-                                    <img src="{{ asset(article.image) }}" class="product-img" alt="{{ article.titre }}" />
-                                </div>
+						</a>
+						<form action="ajouterLigne" method="GET"
+							style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 10px;">
+							{# Champ caché pour envoyer l'ID de l'article #}
+							<input type="hidden" name="id" value="{{ article.id }}">
 
-                                <div class="product-details-mobile">
-                                    <h3>{{ article.titre }}</h3>
+							{# Champ Quantité #}
+							<input type="number" name="qty" value="1" min="1" max="{{ article.disponibilite }}"
+								style="width: 50px; height: 30px; text-align: center; border: 1px solid #ccc;">
 
-                                    <form action="ajouterLigne" method="GET" class="add-to-cart-form" onclick="event.stopPropagation();">
-                                        <input type="hidden" name="id" value="{{ article.id }}">
+							{# Bouton Ajouter #}
+							<button type="submit" class="button product_type_simple add_to_cart_button"
+								style="margin-left: 5px;">Ajouter</button>
+						</form>
+						{% if article.pistes is defined %}
+						{% if article.pistes|length > 0 %}
+						<div id="jplayer_{{ article.id }}" class="jp-jplayer" data-idarticle="{{ article.id }}"
+							data-pistes="{{ article.pistes|json_encode() }}">
+							<audio id="audio"></audio>
+							<button class="prev-jplayer" id="prev"></button>
+							<button class="play-jplayer" id="play"></button>
+							<button class="next-jplayer" id="next"></button>
+							<ul id="playlist"></ul>
+						</div>
+						{% endif %}
+						{% endif %}
+					</li>
+					{% endfor %}
+				</ul>
 
-                                        <div class="qty-wrapper">
-                                            <span class="price">
-                                                <ins><span class="amount">{{ article.prix }} €</span></ins>
-                                            </span>
-                                            <div>
-                                                <label>Qté:</label>
-                                                <input type="number" name="qty" value="1" min="1" max="{{ article.disponibilite }}">
-                                            </div>
-                                        </div>
+				{% if nombreDePages is defined and nombreDePages > 1 %}
+				<nav class="woocommerce-pagination">
+					<ul class="page-numbers">
+						{# Lien Précédent #}
+						{% if page > 1 %}
+						<li>
+							<a class="prev page-numbers"
+								href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': page - 1})) }}">
+								&larr; Précédent
+							</a>
+						</li>
+						{% endif %}
 
-                                        <button type="submit" class="add_to_cart_button">
-                                            Ajouter au panier
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
+						{# Boucle des pages #}
+						{% for i in 1..nombreDePages %}
+						<li>
+							{% if i == page %}
+							<span aria-current="page" class="page-numbers current">{{ i }}</span>
+							{% else %}
+							<a class="page-numbers"
+								href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': i})) }}">
+								{{ i }}
+							</a>
+							{% endif %}
+						</li>
+						{% endfor %}
 
-                            {% if article.pistes is defined and article.pistes|length > 0 %}
-                                <div id="jplayer_{{ article.id }}" class="jp-jplayer" onclick="event.stopPropagation();">
-                                    <audio id="audio"></audio>
-                                    <button class="prev-jplayer" id="prev"></button>
-                                    <button class="play-jplayer" id="play"></button>
-                                    <button class="next-jplayer" id="next"></button>
-                                </div>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-
-                {% if nombreDePages is defined and nombreDePages > 1 %}
-                <nav class="woocommerce-pagination">
-                    <ul class="page-numbers">
-
-                        {% if page > 1 %}
-                        <li>
-                            <a class="page-numbers" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': page - 1})) }}">&larr;</a>
-                        </li>
-                        {% endif %}
-
-                        {% for i in range(1, nombreDePages) %}
-                            {% if i == 1 or i == nombreDePages or (i >= page - 1 and i <= page + 1) %}
-                                <li>
-                                    {% if i == page %}
-                                        <span class="page-numbers current">{{ i }}</span>
-                                    {% else %}
-                                        <a class="page-numbers" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': i})) }}">{{ i }}</a>
-                                    {% endif %}
-                                </li>
-                            {% elseif i == page - 2 or i == page + 2 %}
-                                <li><span class="dots">...</span></li>
-                            {% endif %}
-                        {% endfor %}
-
-                        {% if page < nombreDePages %}
-                        <li>
-                            <a class="page-numbers" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': page + 1})) }}">&rarr;</a>
-                        </li>
-                        {% endif %}
-
-                    </ul>
-                </nav>
-                {% endif %}
-            </main>
-        </div>
-    </div>
+						{# Lien Suivant #}
+						{% if page < nombreDePages %} <li>
+							<a class="next page-numbers"
+								href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'page': page + 1})) }}">
+								Suivant &rarr;
+							</a>
+							</li>
+							{% endif %}
+					</ul>
+				</nav>
+				{% endif %}
+			</main>
+		</div>
+	</div>
+	<!-- .col-full -->
 </div>
+<!-- #content -->
 {% endblock %}
 
 {% block javascripts %}

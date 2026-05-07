@@ -2,17 +2,23 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Catalogue\Article;
+use App\Entity\User;
 use App\Entity\Catalogue\Vetement;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Log\LoggerInterface;
 
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 class AppFixtures extends Fixture
 {
-    protected $logger;
+    private UserPasswordHasherInterface $passwordHasher;
+    private ?LoggerInterface $logger;
 
-    public function __construct(?LoggerInterface $logger = null)
+    public function __construct(UserPasswordHasherInterface $passwordHasher, ?LoggerInterface $logger = null)
     {
+        $this->passwordHasher = $passwordHasher;
         $this->logger = $logger;
     }
 
@@ -23,7 +29,7 @@ class AppFixtures extends Fixture
             $ebay = new Ebay($this->logger);
             $ebay->setCategory('Vêtements');
             $keywords = 'GymShark';
-            
+
             // Récupération de la liste simplifiée (Recherche)
             $itemSummaries = $ebay->searchItemSummaries($keywords, 200);
 
@@ -32,15 +38,14 @@ class AppFixtures extends Fixture
                     $id = explode('|', $itemSummary['itemId'])[1];
 
                     // Filtrage pour ne garder que les vêtements Gymshark
-                    if ($ebay->categoryInCategories('Vêtements', $itemSummary['categories']) && 
-                        stripos($itemSummary['title'], 'gymshark') !== false) {
-                        
+                    if ($ebay->categoryInCategories('Vêtements', $itemSummary['categories']) &&
+                            stripos($itemSummary['title'], 'gymshark') !== false) {
                         $vetement = new Vetement();
                         $vetement->setId((int) $id);
                         $vetement->setTitre($itemSummary['title']);
                         $vetement->setMarque('Gymshark');
                         $vetement->setPrix((float) $itemSummary['price']['value']);
-                        $vetement->setDisponibilite(rand(1, 10)); // Stock aléatoire pour la démo
+                        $vetement->setDisponibilite(rand(1, 10));  // Stock aléatoire pour la démo
 
                         // --- 1. GESTION DES IMAGES ---
                         if (isset($itemSummary['image']['imageUrl'])) {
@@ -63,19 +68,19 @@ class AppFixtures extends Fixture
                             $pays = $loc['country'] ?? '';
 
                             $dept = !empty($cp) ? substr($cp, 0, 2) : '';
-                            
-                            $lieuFinal = "";
+
+                            $lieuFinal = '';
                             if (!empty($ville)) {
                                 $lieuFinal = $ville;
                                 if (!empty($dept)) {
-                                    $lieuFinal .= " (" . $dept . ")";
+                                    $lieuFinal .= ' (' . $dept . ')';
                                 }
                             } elseif (!empty($dept)) {
-                                $lieuFinal = "Département " . $dept;
+                                $lieuFinal = 'Département ' . $dept;
                             }
 
                             if (!empty($pays)) {
-                                $lieuFinal .= (!empty($lieuFinal) ? " - " : "") . $pays;
+                                $lieuFinal .= (!empty($lieuFinal) ? ' - ' : '') . $pays;
                             }
                             $vetement->setLieuExpedition($lieuFinal);
 
@@ -109,6 +114,21 @@ class AppFixtures extends Fixture
 
                         $manager->persist($vetement);
                     }
+                }
+                $existingUser = $manager->getRepository(User::class)->findOneBy(['email' => 'admin@gmail.com']);
+
+                if (!$existingUser) {
+                    $admin = new User();
+                    $admin->setEmail('admin@gmail.com');
+                    $admin->setNomUtilisateur('Administrateur'); 
+                    $admin->setPrenom('Admin');
+                    $admin->setNom('GymShark');
+                    $admin->setRoles(['ROLE_ADMIN']);
+
+                    $hashedPassword = $this->passwordHasher->hashPassword($admin, 'admin0');
+                    $admin->setPassword($hashedPassword);
+
+                    $manager->persist($admin);
                 }
                 $manager->flush();
             }
