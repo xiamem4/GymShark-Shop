@@ -1508,17 +1508,11 @@ button.menu-toggle:after {
 
 .toggled button.menu-toggle:before,
 .toggled button.menu-toggle:after {
-    /* On garde tes mesures */
     height: 5px;
     width: 20px;
     background-color: #333;
-    /* ou ta couleur */
-
-    /* On force la superposition au milieu */
     top: 50% !important;
     margin-top: -5px;
-
-    /* On applique la rotation */
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
@@ -1618,7 +1612,6 @@ button.menu-toggle:after {
 .main-navigation.toggled .menu>ul:not(.nav-menu),
 .main-navigation.toggled ul[aria-expanded=true] {
     max-height: none !important;
-    /* On vire le max-height géant */
     display: block !important;
 }
 
@@ -1628,7 +1621,6 @@ button.menu-toggle:after {
     background-color: #F5DBBE;
     border-top: 3px solid black;
 
-    /* Positionnement pour passer sous le header si nécessaire */
     position: fixed;
     top: 100px;
     left: 0;
@@ -1954,7 +1946,6 @@ nav>button.menu-toggle:hover {
     border: 4px solid #EDAC61;
 }
 
-/* Titre de la page */
 .entry-title, .entry {
     font-family: 'Bebas Neue', cursive;
     font-size: 3.5rem;
@@ -1963,11 +1954,10 @@ nav>button.menu-toggle:hover {
     letter-spacing: 1px;
 }
 
-/* Tableau du panier */
 .shop_table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 15px; /* Espace entre les lignes */
+    border-spacing: 0 15px;
 }
 
 .shop_table thead th {
@@ -1989,7 +1979,6 @@ nav>button.menu-toggle:hover {
     border-bottom: 1px solid #f0f0f0;
 }
 
-/* Image produit */
 .product-thumbnail img {
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -2000,7 +1989,6 @@ nav>button.menu-toggle:hover {
     scale: 1.05;
 }
 
-/* Quantité et Inputs */
 .quantity input {
     border: 2px solid #F5DBBE;
     padding: 8px;
@@ -2010,7 +1998,6 @@ nav>button.menu-toggle:hover {
     outline: none;
 }
 
-/* Boutons */
 .button, .checkout-button {
     background-color: #EDAC61 !important;
     color: #fff;
@@ -2021,7 +2008,6 @@ nav>button.menu-toggle:hover {
     transform: translateY(-3px);
 }
 
-/* Bloc de total à droite */
 .cart-collaterals {
     display: flex;
     justify-content: flex-end;
@@ -2057,7 +2043,6 @@ nav>button.menu-toggle:hover {
     font-size: 1.3rem;
 }
 
-/* Lien de suppression (la croix) */
 .remove {
     background-color: #fceae3;
     color: #e74c3c !important;
@@ -2071,10 +2056,9 @@ nav>button.menu-toggle:hover {
     font-weight: bold;
 }
 
-/* Style par défaut (Desktop) */
 .sorting-form {
     display: flex;
-    justify-content: flex-end; /* Aligne à droite */
+    justify-content: flex-end;
     margin-bottom: 30px;
     padding: 0 15px;
 }
@@ -2088,7 +2072,6 @@ nav>button.menu-toggle:hover {
     cursor: pointer;
     outline: none;
     transition: border-color 0.2s;
-    /* Flèche personnalisée */
     appearance: none;
     -webkit-appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
@@ -2100,7 +2083,6 @@ nav>button.menu-toggle:hover {
     border-color: #EDAC61;
 }
 
-/* Style par défaut (Desktop) */
 .woocommerce-pagination {
     margin: 40px 0;
     margin-right: 50%;
@@ -2113,7 +2095,7 @@ nav>button.menu-toggle:hover {
     justify-content: center;
     list-style: none;
     padding: 0;
-    gap: 10px; /* Plus d'espace sur ordi */
+    gap: 10px;
 }
 
 .page-numbers li a,
@@ -2130,7 +2112,6 @@ nav>button.menu-toggle:hover {
     transition: all 0.3s ease;
 }
 
-/* Effets Hover sur Ordi */
 .page-numbers li a:hover {
     background-color: #F5DBBE;
     color: #fff;
@@ -2157,20 +2138,19 @@ nav>button.menu-toggle:hover {
 }
 
 .products .product {
-    width: calc(33.333% - 14px); /* 3 colonnes */
+    width: calc(33.333% - 14px);
     margin-bottom: 30px;
 }
 
-/* --- La Card --- */
 .type-product {
-    height: 530px; /* Hauteur fixe demandée */
+    height: 530px;
     background: #fff;
     border: 1px solid #eee;
     border-radius: 12px;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Aligne le contenu en haut et le bouton en bas */
+    justify-content: space-between;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
@@ -2181,7 +2161,6 @@ nav>button.menu-toggle:hover {
     border-color: #EDAC61;
 }
 
-/* Image */
 .product-link {
     display: block;
     height: 200px;
@@ -2192,21 +2171,19 @@ nav>button.menu-toggle:hover {
 .product-img {
     max-width: 100%;
     height: 100%;
-    object-fit: contain; /* Évite de déformer l'image */
+    object-fit: contain;
 }
 
-/* Titre */
 .product-details-mobile h3 {
     font-family: 'Bebas Neue', cursive;
     font-size: 1.6rem;
     color: #333;
     margin: 10px 0;
-    height: 60px; /* Hauteur fixe pour les titres longs */
+    height: 60px;
     overflow: hidden;
     text-align: center;
 }
 
-/* Prix et Quantité */
 .qty-wrapper {
     display: flex;
     justify-content: space-around;
@@ -2233,7 +2210,6 @@ nav>button.menu-toggle:hover {
     padding: 5px;
 }
 
-/* --- Bouton Ajouter --- */
 .add_to_cart_button {
     background-color: #EDAC61;
     color: white;
@@ -2249,10 +2225,9 @@ nav>button.menu-toggle:hover {
 }
 
 .add_to_cart_button:hover {
-    background-color: #333; /* Change en anthracite au survol */
+    background-color: #333;
 }
 
-/* Structure Globale */
 .product-container {
     margin-top: 120px;
     display: flex;
@@ -2261,7 +2236,6 @@ nav>button.menu-toggle:hover {
     font-family: sans-serif;
 }
 
-/* Colonne Gauche - Image */
 .product-image-section {
     flex: 1;
     min-width: 300px;
@@ -2293,7 +2267,6 @@ nav>button.menu-toggle:hover {
 }
 .thumb-img:hover { transform: scale(1.05); }
 
-/* Colonne Droite - Infos */
 .product-info-section {
     flex: 2;
     min-width: 300px;
@@ -2309,7 +2282,6 @@ nav>button.menu-toggle:hover {
 }
 .shipping-box p { margin: 5px 0; color: #444; }
 
-/* Formulaire Panier */
 .cart-form { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
 .qty-wrapper {
     margin: 0;
@@ -2341,7 +2313,6 @@ nav>button.menu-toggle:hover {
 }
 .btn-add-cart:hover { background-color: #ec971f; }
 
-/* Recommandations */
 .recommendations-section {
     width: 100%;
     margin-top: 60px;
@@ -2372,15 +2343,13 @@ nav>button.menu-toggle:hover {
     text-overflow: ellipsis;
 }
 
-/* Global et Conteneur */
 .conf-container {
     margin: 50px auto;
-    max-width: 900px; /* Pour éviter que le tableau soit trop large sur grand écran */
+    max-width: 900px;
     padding: 20px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-/* Titres avec Bebas Neue pour la cohérence */
 .status-box h2, h3, .site-title {
     font-family: 'Bebas Neue', cursive;
     letter-spacing: 1px;
@@ -2406,7 +2375,6 @@ nav>button.menu-toggle:hover {
     font-weight: bold;
 }
 
-/* Tableau de commande */
 .order-table {
     width: 100%;
     border-collapse: collapse;
@@ -2414,7 +2382,7 @@ nav>button.menu-toggle:hover {
 }
 
 .order-table thead tr {
-    border-bottom: 3px solid #111; /* Ligne plus épaisse pour le look Shark */
+    border-bottom: 3px solid #111;
 }
 
 .order-table th {
@@ -2430,11 +2398,9 @@ nav>button.menu-toggle:hover {
     border-bottom: 1px solid #eee;
 }
 
-/* Utilitaires de texte */
 .text-right { text-align: right; }
 .text-center { text-align: center; }
 
-/* Lignes de total */
 .total-row {
     border-top: 2px solid #111;
 }
@@ -2449,14 +2415,13 @@ nav>button.menu-toggle:hover {
     font-family: 'Bebas Neue', cursive;
 }
 
-/* Bouton Accueil */
 .btn-home {
     display: inline-block;
     background-color: #111;
     color: #fff;
     padding: 15px 35px;
     text-decoration: none;
-    border-radius: 0; /* Carré pour un look plus pro/moderne */
+    border-radius: 0;
     text-transform: uppercase;
     font-family: 'Bebas Neue', cursive;
     font-size: 1.2em;
@@ -2469,16 +2434,14 @@ nav>button.menu-toggle:hover {
 
 
 
-/* Conteneur principal */
 .shark-reg-container {
     max-width: 450px;
     margin: 60px auto;
     padding: 30px;
-    /* Utilisation du beige clair pour le fond du conteneur ou rester sur blanc avec bordure colorée */
     background: #ffffff;
     border: 2px solid #f5dbbe;
     border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(237, 172, 97, 0.1); /* Ombre légère aux tons orangés */
+    box-shadow: 0 8px 20px rgba(237, 172, 97, 0.1);
 }
 
 .title-reg {
@@ -2487,39 +2450,35 @@ nav>button.menu-toggle:hover {
     font-family: 'Bebas Neue', cursive;
 }
 
-/* Espacement des blocs */
 .shark-reg-row {
     margin-bottom: 20px;
 }
 
-/* Labels en orange/ocre */
 .shark-reg-label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
     font-size: 0.95rem;
     text-transform: uppercase;
-    color: #edac61 !important; /* Ta couleur principale demandée */
+    color: #edac61 !important;
     letter-spacing: 0.5px;
 }
 
-/* Style des champs de texte */
 .shark-reg-input {
     width: 100%;
     padding: 12px 15px;
-    border: 2px solid #f5dbbe; /* Bordure beige clair */
+    border: 2px solid #f5dbbe;
     background: #fff;
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
 
 .shark-reg-input:focus {
-    border-color: #edac61; /* Change vers l'orange au focus */
-    background-color: #fcf8f3; /* Très léger reflet beige au focus */
+    border-color: #edac61;
+    background-color: #fcf8f3;
     outline: none;
 }
 
-/* Checkbox et label */
 .shark-reg-checkbox-group {
     display: flex;
     align-items: center;
@@ -2531,13 +2490,12 @@ nav>button.menu-toggle:hover {
     width: 18px;
     height: 18px;
     cursor: pointer;
-    accent-color: #edac61; /* Colorie la checkbox elle-même */
+    accent-color: #edac61;
 }
 
-/* Bouton Register */
 .shark-reg-btn {
     width: 100%;
-    background-color: #edac61; /* Garde le noir pour le contraste */
+    background-color: #edac61;
     padding: 18px;
     font-family: 'Bebas Neue', cursive;
     font-size: 1.6rem;
@@ -2548,17 +2506,16 @@ nav>button.menu-toggle:hover {
 }
 
 .shark-reg-btn:hover {
-    background-color: #111; /* Inverse les couleurs au survol */
+    background-color: #111;
     color: #fff;
 }
 
-/* Erreurs de formulaire */
 .shark-reg-error {
     background: #fff0f0;
     color: #d9534f;
     padding: 12px;
     margin-bottom: 20px;
-    border-left: 4px solid #edac61; /* Rappel de ta couleur même sur l'erreur */
+    border-left: 4px solid #edac61;
     font-size: 0.9rem;
 }
 
@@ -2573,26 +2530,22 @@ nav>button.menu-toggle:hover {
         margin-top: 20px;
     }
 
-    /* On cache la colonne quantité dans le corps du tableau */
     .order-table th:nth-child(2),
     .order-table td:nth-child(2) {
         display: none;
     }
 
-    /* CORRECTION ICI : On force le titre des totaux à ne prendre qu'une colonne */
     .order-table tfoot th[colspan="2"] {
-        colspan: 1; /* Note: Le CSS ne change pas l'attribut HTML, on gère ça en dessous */
+        colspan: 1;
         text-align: left;
         padding-left: 10px;
     }
 
-    /* On s'assure que la table ne dépasse pas */
     .order-table {
         display: table;
         width: 100%;
     }
 
-    /* 2. On remet les sections à 100% de largeur */
     .product-image-section,
     .product-info-section {
         flex: none;
@@ -2600,19 +2553,16 @@ nav>button.menu-toggle:hover {
         min-width: 0;
     }
 
-    /* 3. Ajustement de l'image principale */
     .main-img {
         max-width: 100%;
         height: auto;
     }
 
-    /* 4. On agrandit les miniatures pour qu'elles soient plus faciles à cliquer avec le doigt */
     .thumb-img {
         width: 65px;
         height: 65px;
     }
 
-    /* 5. On ajuste les textes pour les petits écrans */
     .product-title {
         font-size: 1.5em;
         text-align: center;
@@ -2623,10 +2573,9 @@ nav>button.menu-toggle:hover {
         text-align: center;
     }
 
-    /* 6. Formulaire de panier : On le met en colonne pour plus de confort */
     .cart-form {
         flex-direction: column;
-        align-items: stretch; /* Le bouton prend toute la largeur */
+        align-items: stretch;
         gap: 15px;
     }
 
@@ -2639,12 +2588,11 @@ nav>button.menu-toggle:hover {
 
     .btn-add-cart {
         width: 100%;
-        height: 50px; /* Bouton plus haut pour le tactile */
+        height: 50px;
     }
 
-    /* 7. Recommandations : on passe à 2 colonnes par ligne ou 1 seule */
     .rec-card {
-        width: calc(50% - 10px); /* 2 cartes par ligne */
+        width: calc(50% - 10px);
         padding: 10px;
     }
 
@@ -2659,7 +2607,6 @@ nav>button.menu-toggle:hover {
         padding-bottom: 30px;
     }
 
-    /* Chaque cellule devient un bloc flexible */
     .shop_table td {
         display: flex !important;
         justify-content: space-between !important;
@@ -2671,9 +2618,8 @@ nav>button.menu-toggle:hover {
         box-sizing: border-box !important;
     }
 
-    /* Génération du titre devant le résultat */
     .shop_table td::before {
-        content: attr(data-title); /* Récupère le texte dans data-title */
+        content: attr(data-title);
         font-weight: bold !important;
         text-transform: uppercase !important;
         font-size: 0.8rem !important;
@@ -2683,22 +2629,19 @@ nav>button.menu-toggle:hover {
         text-align: left !important;
     }
 
-    /* Exceptions pour l'image et la croix de suppression */
     .product-remove::before,
     .product-thumbnail::before {
-        content: "" !important; /* On ne veut pas de texte "Image:" ou "Supprimer:" */
+        content: "" !important;
     }
 
     .product-remove, .product-thumbnail {
-        justify-content: center !important; /* Centrer l'image et la croix */
+        justify-content: center !important;
     }
 
-    /* On retire la bordure de la dernière cellule de la carte */
     .shop_table td:last-child {
         border-bottom: none !important;
     }
 
-    /* Style de la ligne (la carte) */
     .woocommerce-cart-form__cart-item {
         border: 1px solid #EDAC61 !important;
         border-radius: 10px !important;
@@ -2716,24 +2659,20 @@ nav>button.menu-toggle:hover {
         position: relative;
     }
 
-    /* Force le menu burger à rester visible et au-dessus */
     header, .navbar, .menu-toggle, .mobile-menu-anchor {
         z-index: 9999 !important;
     }
 
-    /* --- Styles Généraux du Panier --- */
     .content-panier {
         width: 95vw;
-        margin: 0 auto !important; /* Remplacé margin-left/transform par auto pour éviter les bugs */
+        margin: 0 auto !important;
     }
-    /* --- Styles Généraux du Panier --- */
     .content-panier {
         width: 95vw;
         margin-left: 50% !important;
         transform: translateX(-50%);
     }
 
-    /* Transformation du tableau de panier en cartes */
     .shop_table,
     .shop_table thead,
     .shop_table tbody,
@@ -2780,7 +2719,6 @@ nav>button.menu-toggle:hover {
         color: #EDAC61;
     }
 
-    /* Ajustement des totaux et boutons panier */
     .cart-collaterals {
         justify-content: center;
     }
@@ -2796,7 +2734,6 @@ nav>button.menu-toggle:hover {
         padding: 20px;
     }
 
-    /* --- Styles de la Liste des Produits (Boutique) --- */
     .products {
         display: flex !important;
         flex-direction: column !important;
@@ -2829,7 +2766,6 @@ nav>button.menu-toggle:hover {
         height: auto;
     }
 
-    /* Style de l'image (colonne gauche) */
     .type-product img {
         height: 150px !important;
         width: 125px !important;
@@ -2838,7 +2774,6 @@ nav>button.menu-toggle:hover {
         border-radius: 8px !important;
     }
 
-    /* Colonne de droite : Titre, Prix, Formulaire en colonne */
     .product-details-mobile {
         display: flex !important;
         flex-direction: column !important;
@@ -2847,7 +2782,6 @@ nav>button.menu-toggle:hover {
         text-align: left !important;
     }
 
-    /* Titre (colonne droite) */
     .type-product h3,
     .product-details-mobile h3 {
         text-align: left !important;
@@ -2865,20 +2799,18 @@ nav>button.menu-toggle:hover {
         color: #EDAC61 !important;
     }
 
-    /* Formulaire et bouton */
     .add-to-cart-form {
         display: flex !important;
         flex-direction: column !important;
         gap: 8px !important;
     }
 
-    /* Wrapper pour aligner "Qté" et l'input sur une ligne */
     .qty-wrapper {
         display: flex !important;
-        justify-content: flex-start !important; /* Aligné à gauche comme ton texte */
+        justify-content: flex-start !important;
         align-items: center !important;
         gap: 20px !important;
-        border: none !important; /* Enlever la bordure dashed de l'ordi */
+        border: none !important;
         padding: 0 !important;
         margin-bottom: 10px !important;
     }
@@ -2904,10 +2836,9 @@ nav>button.menu-toggle:hover {
         border-radius: 4px !important;
     }
 
-    /* Bouton ajouter au panier (colonne droite) */
     .type-product .add_to_cart_button {
         font-size: 0.85rem !important;
-        background-color: #F5DBBE !important; /* Ta couleur spécifique mobile */
+        background-color: #F5DBBE !important;
         border-radius: 8px !important;
         color: #333 !important;
         font-weight: bold !important;
@@ -2923,16 +2854,14 @@ nav>button.menu-toggle:hover {
         text-align: center;
     }
 
-    /* Conteneur du formulaire de tri */
     .sorting-form {
-        display: block !important; /* Annule le flex-end de l'ordi */
+        display: block !important;
         text-align: center !important;
         margin: 10px auto 20px auto !important;
         width: 95% !important;
         padding: 0 !important;
     }
 
-    /* Le menu déroulant stylisé pour mobile */
     .sorting-form select.orderby {
         width: 100% !important;
         padding: 12px 15px !important;
@@ -2950,7 +2879,6 @@ nav>button.menu-toggle:hover {
         background-size: 18px !important;
     }
 
-    /* Effet au clic pour mobile */
     .sorting-form select.orderby:active {
         background-color: #FDF5ED !important;
         border-color: #F5DBBE !important;
@@ -2961,7 +2889,7 @@ nav>button.menu-toggle:hover {
         margin: 20px 0 !important;
         width: 100% !important;
         margin-right: 0 !important;
-        transform: none !important; /* Annule le centrage complexe de l'ordi */
+        transform: none !important;
     }
 
     .page-numbers {
