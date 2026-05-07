@@ -213,13 +213,15 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             }>,
  *             transitions?: list<array{ // Default: []
  *                 name?: string|Param,
+ *             transitions?: list<array{ // Default: []
+ *                 name?: string|Param,
  *                 guard?: string|Param, // An expression to block the transition.
  *                 from?: \BackedEnum|string|list<array{ // Default: []
  *                     place?: string|Param,
  *                     weight?: int|Param, // Default: 1
  *                 }>,
- *                 to?: \BackedEnum|string|list<array{ // Default: []
- *                     place?: string|Param,
+ *                 to?: list<array{ // Default: []
+ *                     place: string|Param,
  *                     weight?: int|Param, // Default: 1
  *                 }>,
  *                 weight?: int|Param, // Default: 1
@@ -461,8 +463,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 allow_no_handlers?: bool|Param, // Default: false
  *                 allow_no_senders?: bool|Param, // Default: true
  *             },
- *             middleware?: string|list<string|array{ // Default: []
- *                 id?: scalar|Param|null,
+ *             middleware?: list<string|array{ // Default: []
+ *                 id: scalar|Param|null,
  *                 arguments?: list<mixed>,
  *             }>,
  *         }>,
@@ -634,8 +636,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             lock_factory?: scalar|Param|null, // The service ID of the lock factory used by this limiter (or null to disable locking). // Default: "auto"
  *             cache_pool?: scalar|Param|null, // The cache pool to use for storing the current limiter state. // Default: "cache.rate_limiter"
  *             storage_service?: scalar|Param|null, // The service ID of a custom storage implementation, this precedes any configured "cache_pool". // Default: null
- *             policy?: "fixed_window"|"token_bucket"|"sliding_window"|"compound"|"no_limit"|Param, // The algorithm to be used by this limiter.
- *             limiters?: string|list<scalar|Param|null>,
+ *             policy: "fixed_window"|"token_bucket"|"sliding_window"|"compound"|"no_limit"|Param, // The algorithm to be used by this limiter.
+ *             limiters?: list<scalar|Param|null>,
  *             limit?: int|Param, // The maximum allowed hits in a fixed interval or burst.
  *             interval?: scalar|Param|null, // Configures the fixed interval if "policy" is set to "fixed_window" or "sliding_window". The value must be a number followed by "second", "minute", "hour", "day", "week" or "month" (or their plural equivalent).
  *             rate?: array{ // Configures the fill rate if "policy" is set to "token_bucket".
@@ -1268,8 +1270,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             success_handler?: scalar|Param|null,
  *             failure_handler?: scalar|Param|null,
  *             realm?: scalar|Param|null, // Default: null
- *             token_extractors?: string|list<scalar|Param|null>,
- *             token_handler?: string|array{
+ *             token_extractors?: list<scalar|Param|null>,
+ *             token_handler: string|array{
  *                 id?: scalar|Param|null,
  *                 oidc_user_info?: string|array{
  *                     base_uri?: scalar|Param|null, // Base URI of the userinfo endpoint on the OIDC server, or the OIDC server URI to use the discovery (require "discovery" to be configured).
@@ -1283,7 +1285,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *                 },
  *                 oidc?: array{
  *                     discovery?: array{ // Enable the OIDC discovery.
- *                         base_uri?: string|list<scalar|Param|null>,
+ *                         base_uri: list<scalar|Param|null>,
  *                         cache?: array{
  *                             id?: scalar|Param|null, // Cache service id to use to cache the OIDC discovery configuration.
  *                         },

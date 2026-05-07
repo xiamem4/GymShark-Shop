@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Catalogue\Article;
+use App\Entity\Catalogue\Vetement;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -106,15 +107,26 @@ class RechercheController extends AbstractController
     public function detailArticleAction(Request $request): Response
     {
         $id = $request->query->get("id");
-
+        
+        // 1. Récupération de l'article principal
         $article = $this->entityManager->getRepository(Article::class)->find($id);
 
-        if (!$article) {
-            throw $this->createNotFoundException("L'article demandé n'existe pas.");
-        }
+        // 2. Récupération de 4 articles similaires (du même type, en excluant l'actuel)
+        $allSimilaires = $this->entityManager->getRepository(Vetement::class)
+            ->createQueryBuilder('v')
+            ->where('v.id != :currentId') // On exclut l'article qu'on regarde
+            ->setParameter('currentId', $id)
+            ->getQuery()
+            ->getResult();
 
+        shuffle($allSimilaires);
+
+        $similaires = array_slice($allSimilaires, 0, 4);
+
+        // 3. On envoie l'article ET les similaires à la vue
         return $this->render('detail.html.twig', [
             'article' => $article,
+            'articlesSimilaires' => $similaires
         ]);
     }
 
