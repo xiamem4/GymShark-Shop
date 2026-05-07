@@ -26,6 +26,11 @@
             </div>
 
             <div class="shark-reg-row">
+                {{ form_label(registrationForm.nomUtilisateur, 'Pseudo', {'label_attr': {'class': 'shark-reg-label'}}) }}
+                {{ form_widget(registrationForm.nomUtilisateur, {'attr': {'class': 'shark-reg-input', 'placeholder': ''}}) }}
+            </div>
+
+            <div class="shark-reg-row">
                 {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'shark-reg-label'}}) }}
                 {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'shark-reg-input', 'placeholder': 'Mot de passe'}}) }}
             </div>
